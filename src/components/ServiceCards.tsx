@@ -126,7 +126,7 @@ export default function ServiceCards({ isVisible }: ServiceCardsProps) {
               >
                 {/* Massive Dual-Font Title */}
                 <motion.h2 
-                  className="text-3xl sm:text-4xl md:text-7xl lg:text-[7vw] text-white whitespace-nowrap luxury-text-shadow drop-shadow-2xl flex items-center justify-center gap-[0.2em] pointer-events-none"
+                  className="text-5xl sm:text-6xl md:text-7xl lg:text-[7vw] text-white whitespace-nowrap luxury-text-shadow drop-shadow-2xl flex items-center justify-center gap-[0.2em] pointer-events-none"
                   animate={{ 
                     opacity: isFaded ? 0.2 : 1,
                     scale: isHovered ? 1.05 : 1
