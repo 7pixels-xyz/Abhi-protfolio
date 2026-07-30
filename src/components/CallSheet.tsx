@@ -1,72 +1,83 @@
 'use client';
 
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef } from 'react';
-import { useTheme } from '@/components/ThemeProvider';
+import Link from 'next/link';
 
 export default function CallSheet() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { theme } = useTheme();
-  const isNight = theme === 'night';
-  
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end end"]
-  });
-
-  // Parallax the footer up as the user reaches the bottom
-  const y = useTransform(scrollYProgress, [0, 1], [200, 0]);
-
   return (
-    <section 
-      ref={containerRef}
-      className={`relative z-10 w-full min-h-screen overflow-hidden flex flex-col justify-end transition-colors duration-1000 ${isNight ? 'bg-[#050505]' : 'bg-sky-200'}`}
-    >
-      {/* Massive ambient clouds for the footer (bringing it full circle) */}
-      <div className={`absolute bottom-[-20%] left-[-10%] w-[60vw] h-[60vw] rounded-[50%] blur-[120px] pointer-events-none transition-colors duration-1000 ${isNight ? 'bg-[#1e1b4b] opacity-40' : 'bg-white opacity-80'}`} />
-      <div className={`absolute bottom-[-10%] right-[-10%] w-[70vw] h-[70vw] rounded-[50%] blur-[100px] pointer-events-none transition-colors duration-1000 ${isNight ? 'bg-[#312e81] opacity-30' : 'bg-sky-100 opacity-90'}`} />
+    <div className="w-full bg-transparent px-2 md:px-4 pb-2 md:pb-4 pt-12 md:pt-24 z-50 relative">
+      <footer className="w-full bg-[#1b3f55] rounded-[2rem] md:rounded-[3rem] text-[#f4ece3] flex flex-col items-center justify-between pt-16 md:pt-32 pb-8 px-6 md:px-12 relative overflow-hidden shadow-2xl">
+        
+        {/* Subtle Grid Background */}
+        <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
 
-      <motion.div 
-        className="w-full max-w-7xl px-4 md:px-12 mx-auto pb-12 md:pb-24 z-10"
-        style={{ y }}
-      >
-        <div className="flex flex-col items-center text-center">
-          
-          <h3 className={`font-sans font-bold tracking-[0.4em] uppercase text-sm md:text-base mb-12 transition-colors duration-700 ${isNight ? 'text-white/40' : 'text-sky-700/60'}`}>
-            Act V // The Call Sheet
-          </h3>
-          
-          {/* Massive CTA */}
-          <h2 className={`font-playfair text-6xl md:text-[8rem] lg:text-[10rem] font-black uppercase tracking-tighter leading-[0.8] mb-8 md:mb-16 transition-colors duration-700 ${isNight ? 'text-white' : 'text-[#0a192f]'}`}>
-            Let's Build <br />
-            <span className={`font-cormorant font-light italic lowercase tracking-normal transition-colors duration-700 ${isNight ? 'text-[#FFD700]' : 'text-sky-600'}`}>something.</span>
-          </h2>
+        {/* Top Indicator */}
+        <div className="relative z-10 flex flex-col items-center mb-16 md:mb-24">
+          <div className="w-px h-16 md:h-24 bg-gradient-to-b from-transparent to-[#f4ece3]/30 mb-6" />
+          <span className="font-mono text-[9px] md:text-xs uppercase tracking-[0.4em] text-[#f4ece3]/50">
+            // End of File
+          </span>
+        </div>
 
-          {/* Magnetic Links (We use hover scales for now to simulate the magnetic pull) */}
-          <div className="flex flex-wrap justify-center gap-8 md:gap-16 mt-12 mb-32">
-            {['Email', 'Instagram', 'Vimeo', 'Twitter'].map((link) => (
-              <motion.a 
-                key={link}
-                href={`#${link.toLowerCase()}`}
-                className={`relative font-sans text-xl md:text-3xl font-light tracking-wide cursor-none group transition-colors duration-700 ${isNight ? 'text-white/80' : 'text-sky-900'}`}
-                whileHover={{ scale: 1.1, y: -5 }}
-                transition={{ type: 'spring', stiffness: 400, damping: 10 }}
-                data-cursor-text="Connect"
-              >
-                {link}
-                <span className={`absolute -bottom-2 left-0 w-0 h-[1px] transition-all duration-300 group-hover:w-full ${isNight ? 'bg-white' : 'bg-sky-600'}`} />
-              </motion.a>
-            ))}
-          </div>
+        {/* Huge INITIALIZE Text */}
+        <div className="relative z-10 text-center mb-16 md:mb-24">
+           <Link href="/contact" className="group">
+             <h2 className="font-cormorant text-6xl md:text-[8rem] lg:text-[10rem] uppercase tracking-tight leading-none text-[#f4ece3] hover:text-white transition-colors duration-500 drop-shadow-sm">
+               Initialize
+             </h2>
+           </Link>
+        </div>
 
-          {/* Copyright/Footer Text */}
-          <div className={`w-full flex flex-col md:flex-row items-center justify-between pt-8 border-t font-sans text-xs md:text-sm tracking-widest uppercase transition-colors duration-700 ${isNight ? 'border-white/10 text-white/40' : 'border-sky-900/10 text-sky-900/60'}`}>
-            <p>© {new Date().getFullYear()} Abhi. All Rights Reserved.</p>
-            <p className="mt-4 md:mt-0">Designed & Built in the Clouds.</p>
-          </div>
+        {/* The Squiggly Box Logo */}
+        <div className="relative z-10 flex flex-col items-center justify-center mb-24 md:mb-32">
+           <span className="font-mono text-[8px] uppercase tracking-[0.3em] text-[#f4ece3]/40 mb-3">Brand_Asset_Primary.svg</span>
+           <div className="relative flex items-center justify-center px-12 py-8 border border-[#f4ece3]/30 rounded-sm transform rotate-1 group hover:border-[#f4ece3]/60 transition-colors cursor-pointer bg-white/[0.01] backdrop-blur-sm">
+              {/* Fake hand-drawn border effect */}
+              <div className="absolute inset-0 border border-[#f4ece3]/20 rounded-md transform -rotate-2 scale-[1.02] pointer-events-none transition-transform group-hover:-rotate-1" />
+              <div className="absolute inset-0 border border-[#f4ece3]/10 rounded-lg transform rotate-2 scale-[1.05] pointer-events-none transition-transform group-hover:rotate-1" />
+              
+              <h3 className="font-sans font-black text-4xl md:text-6xl tracking-tighter text-[#f4ece3] drop-shadow-md">
+                7pixels
+              </h3>
+              
+              <div className="absolute -right-8 md:-right-12 top-1/2 transform -translate-y-1/2 w-4 h-4 md:w-5 md:h-5 rounded-full border border-[#f4ece3]/30 flex items-center justify-center">
+                 <div className="w-1 h-1 bg-[#f4ece3]/50 rounded-full group-hover:bg-[#f4ece3] transition-colors" />
+              </div>
+           </div>
+        </div>
+
+        {/* Footer Bottom Row */}
+        <div className="relative z-10 w-full flex flex-col lg:flex-row items-center justify-between gap-8 pt-8 border-t border-[#f4ece3]/10 font-mono text-[8px] md:text-[9px] uppercase tracking-[0.2em] text-[#f4ece3]/60">
+           
+           {/* Left Terminal Box */}
+           <div className="border border-[#f4ece3]/20 p-4 rounded-sm flex items-start gap-3 max-w-xs bg-[#f4ece3]/[0.02] w-full lg:w-auto relative transform -rotate-1 group hover:rotate-0 transition-transform cursor-crosshair">
+             <div className="absolute inset-0 border border-[#f4ece3]/10 transform rotate-2 rounded-sm pointer-events-none group-hover:rotate-0 transition-transform" />
+             <div className="w-1.5 h-1.5 rounded-full bg-[#f4ece3]/80 mt-1 animate-pulse flex-shrink-0" />
+             <p className="leading-relaxed">
+               SYSTEM ERROR: <br />
+               OFFSEQUENCE DETECTED... <br />
+               AWAITING CLIENT DECISION_
+             </p>
+           </div>
+
+           {/* Center Info */}
+           <div className="flex flex-col md:flex-row items-center gap-6 md:gap-16 text-center">
+             <span>Server Status: Active / {new Date().getFullYear()}</span>
+             
+             <div className="flex items-center gap-6">
+                <Link href="#" className="hover:text-[#f4ece3] transition-colors">Instagram</Link>
+                <Link href="#" className="hover:text-[#f4ece3] transition-colors">Twitter</Link>
+                <Link href="#" className="hover:text-[#f4ece3] transition-colors">LinkedIn</Link>
+             </div>
+           </div>
+
+           {/* Right Info */}
+           <div className="flex items-center gap-4">
+             <div className="w-px h-8 bg-[#f4ece3]/20 hidden md:block" />
+             <span className="text-center md:text-right">Compiled with<br className="md:hidden" /> absolute strictness.</span>
+           </div>
 
         </div>
-      </motion.div>
-    </section>
+      </footer>
+    </div>
   );
 }
