@@ -24,7 +24,7 @@ export default function LightbulbToggle() {
       {/* The Wire connecting to ceiling */}
       <motion.div 
          className="w-1 bg-[#222] shadow-[inset_1px_0_2px_rgba(255,255,255,0.2)] origin-top" 
-         style={{ height: 48, scaleY: useTransform(y, [0, 80], [1, 2.5]) }}
+         style={{ height: 80, scaleY: useTransform(y, [0, 80], [1, 2.5]) }}
       />
 
       {/* The Bulb (Clickable and Draggable) */}
