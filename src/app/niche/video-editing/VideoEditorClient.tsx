@@ -196,11 +196,32 @@ const ShortsVideoCard = ({ videoUrl, isCenter }: { videoUrl: string, isCenter: b
 const ShortsCarousel = ({ videos, onPlay }: { videos: string[], onPlay: (url: string) => void }) => {
   const [activeIndex, setActiveIndex] = useState(Math.floor(videos.length / 2));
 
-  const handleNext = () => setActiveIndex((prev) => Math.min(videos.length - 1, prev + 1));
-  const handlePrev = () => setActiveIndex((prev) => Math.max(0, prev - 1));
+  const handleNext = () => {
+    setActiveIndex((prev) => Math.min(videos.length - 1, prev + 1));
+    if (typeof navigator !== 'undefined' && navigator.vibrate) navigator.vibrate(50);
+  };
+  const handlePrev = () => {
+    setActiveIndex((prev) => Math.max(0, prev - 1));
+    if (typeof navigator !== 'undefined' && navigator.vibrate) navigator.vibrate(50);
+  };
+
+  const handleDragEnd = (e: any, { offset, velocity }: any) => {
+    const swipe = offset.x;
+    if (swipe < -50) {
+      handleNext();
+    } else if (swipe > 50) {
+      handlePrev();
+    }
+  };
 
   return (
     <div className="relative w-full h-[600px] md:h-[700px] flex items-center justify-center perspective-[1500px] mt-10 md:mt-0">
+      <motion.div 
+        className="absolute inset-0 z-40 touch-pan-y" 
+        drag="x" 
+        dragConstraints={{ left: 0, right: 0 }} 
+        onDragEnd={handleDragEnd} 
+      />
       {videos.map((url, i) => {
         const offset = i - activeIndex;
         const absOffset = Math.abs(offset);
@@ -319,6 +340,12 @@ const LongformVideoCard = ({ videoUrl, isActive, index }: { videoUrl: string, is
 
 const LongformAccordion = ({ videos, onPlay }: { videos: string[], onPlay: (url: string) => void }) => {
   const [active, setActive] = useState(0);
+
+  const handleSelect = (i: number) => {
+    setActive(i);
+    if (typeof navigator !== 'undefined' && navigator.vibrate) navigator.vibrate(40);
+  };
+
   return (
     <div className="flex flex-col gap-2 w-full h-[600px] md:h-[800px] mt-10 md:mt-0">
       {videos.map((url, i) => {
@@ -331,9 +358,9 @@ const LongformAccordion = ({ videos, onPlay }: { videos: string[], onPlay: (url:
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             onClick={() => {
               if (isActive) onPlay(url);
-              else setActive(i);
+              else handleSelect(i);
             }}
-            onMouseEnter={() => setActive(i)}
+            onMouseEnter={() => handleSelect(i)}
           >
              <LongformVideoCard videoUrl={url} isActive={isActive} index={i} />
           </motion.div>
@@ -416,7 +443,7 @@ const ColorGradingStrip = ({ videos, onPlay }: { videos: string[], onPlay: (url:
       {videos.map((url, i) => (
         <motion.div 
           key={i} 
-          className="min-w-[85%] md:min-w-[45%] aspect-[16/9] rounded-[2rem] overflow-hidden snap-center border border-white/10 shadow-[0_30px_60px_rgba(0,0,0,0.5)] cursor-pointer"
+          className="min-w-[85%] md:min-w-[45%] aspect-[16/9] md:aspect-auto md:h-[400px] rounded-[2rem] overflow-hidden snap-center border border-white/10 shadow-[0_30px_60px_rgba(0,0,0,0.5)] cursor-pointer"
           whileHover={{ scale: 1.05, rotateY: -5, zIndex: 10 }}
           initial={{ rotateY: 10, scale: 0.95, opacity: 0.8 }}
           whileInView={{ rotateY: 0, scale: 1, opacity: 1 }}
@@ -531,25 +558,25 @@ const shortVideos = [
 
 const Section = ({ script, main, tools, children }: { script: string, main: string, tools?: React.ReactNode, children: React.ReactNode }) => {
   return (
-    <div className="flex flex-col xl:flex-row items-start justify-center gap-16 xl:gap-32 w-full max-w-[90rem] mx-auto my-40 relative z-10 px-8 md:px-16">
+    <div className="flex flex-col xl:flex-row items-start justify-center gap-8 md:gap-16 xl:gap-32 w-full max-w-[90rem] mx-auto my-24 md:my-40 relative z-10 px-6 md:px-16">
       
       {/* Sticky Typography Column */}
-      <div className="xl:w-1/3 flex flex-col items-start text-left w-full sticky top-40">
+      <div className="xl:w-1/3 flex flex-col items-start text-left w-full sticky top-0 md:top-40 z-30 pt-24 pb-8 md:pt-0 md:pb-0 bg-gradient-to-b from-[#030303] via-[#030303]/95 to-transparent md:bg-none -mt-24 md:mt-0">
         <motion.div 
-          className="relative mb-12 w-full"
+          className="relative mb-6 md:mb-12 w-full"
           initial={{ opacity: 0, x: -30 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
         >
-          <div className="flex items-center gap-4 mb-4 overflow-hidden">
+          <div className="flex items-center gap-4 mb-2 md:mb-4 overflow-hidden">
              <motion.div className="h-px bg-white/30" initial={{ width: 0 }} whileInView={{ width: 40 }} viewport={{ once: true }} transition={{ duration: 1, delay: 0.5 }} />
              <span className="font-sans text-[10px] tracking-[0.3em] uppercase text-white/50">{script} Series</span>
           </div>
           
-          <h2 className="flex flex-col text-6xl md:text-8xl font-sans font-black tracking-tighter text-white uppercase relative z-10 leading-[0.85]">
+          <h2 className="flex flex-col text-[4rem] leading-[0.85] md:text-8xl font-sans font-black tracking-tighter text-white uppercase relative z-10 md:leading-[0.85]">
             <motion.span 
-              className="font-cormorant italic text-4xl md:text-6xl font-light text-white/60 lowercase tracking-widest pl-2 md:pl-4 mb-2 md:mb-4"
+              className="font-cormorant italic text-4xl md:text-6xl font-light text-white/60 lowercase tracking-widest pl-1 md:pl-4 mb-1 md:mb-4"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -559,7 +586,7 @@ const Section = ({ script, main, tools, children }: { script: string, main: stri
             </motion.span>
             <div className="overflow-hidden">
                <motion.span 
-                 className="block"
+                 className="block drop-shadow-[0_0_15px_rgba(255,255,255,0.1)]"
                  initial={{ y: "100%" }}
                  whileInView={{ y: "0%" }}
                  viewport={{ once: true }}
@@ -573,7 +600,7 @@ const Section = ({ script, main, tools, children }: { script: string, main: stri
         
         {tools && (
           <motion.div 
-            className="font-sans text-xs tracking-[0.1em] text-white/60 uppercase"
+            className="font-sans text-xs tracking-[0.1em] text-white/60 uppercase hidden md:block"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
@@ -585,7 +612,7 @@ const Section = ({ script, main, tools, children }: { script: string, main: stri
       </div>
 
       {/* Grid Content Column */}
-      <div className="xl:w-2/3 w-full relative">
+      <div className="xl:w-2/3 w-full relative z-20">
         {children}
       </div>
     </div>
