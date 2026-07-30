@@ -1,0 +1,53 @@
+@import "tailwindcss";
+
+@theme {
+  --font-cormorant: var(--font-cormorant), serif;
+  --font-bodoni: var(--font-bodoni), serif;
+}
+
+@layer base {
+  :root {
+    --bg-sky: #87CEEB; /* Bright sky blue */
+    --text-main: #FFFFFF;
+    --text-muted: rgba(255, 255, 255, 0.7);
+    --accent: #2563EB; /* Figma blue cursor color */
+  }
+
+  :root.night-theme {
+    --bg-sky: #090a0f; /* Deep dark night sky */
+  }
+
+  body {
+    background-color: var(--bg-sky);
+    color: var(--text-main);
+    overflow-x: hidden;
+    transition: background-color 1.5s ease-in-out;
+  }
+}
+
+/* Force hide all native cursors globally across every element, overriding tailwind cursor-pointer */
+* {
+  cursor: none !important;
+}
+
+@layer utilities {
+  .premium-glass {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 
+      0 30px 60px -10px rgba(0, 0, 0, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  }
+  
+  .luxury-text-shadow {
+    text-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  }
+}
+
+/* Custom Selection */
+::selection {
+  background-color: var(--accent);
+  color: #fff;
+}
