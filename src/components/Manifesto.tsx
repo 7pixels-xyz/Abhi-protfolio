@@ -55,7 +55,7 @@ export default function Manifesto() {
         {/* --- CLOUD BACKGROUND LAYER --- */}
         {/* The solid white core that holds the content, fading in/out */}
         <motion.div 
-          className="absolute inset-0 bg-white"
+          className="absolute inset-0 bg-white dark:bg-[#0B1120]"
           style={{ opacity: bgOpacity }}
         />
 
@@ -64,9 +64,9 @@ export default function Manifesto() {
           className="absolute inset-0 flex justify-center items-center pointer-events-none"
           style={{ y: cloudRiseY, opacity: cloudOpacity }}
         >
-          <motion.div className="absolute w-[80vw] h-[60vh] bg-white rounded-[50%] blur-[60px]" style={{ scale: cloudScale, top: '-20vh', left: '-10vw' }} />
-          <motion.div className="absolute w-[90vw] h-[70vh] bg-sky-50/80 rounded-[50%] blur-[80px]" style={{ scale: cloudScale, top: '-10vh', right: '-15vw' }} />
-          <motion.div className="absolute w-[100vw] h-[50vh] bg-white rounded-[50%] blur-[50px]" style={{ scale: cloudScale, top: '-30vh' }} />
+          <motion.div className="absolute w-[80vw] h-[60vh] bg-white dark:bg-[#0B1120] rounded-[50%] blur-[60px]" style={{ scale: cloudScale, top: '-20vh', left: '-10vw' }} />
+          <motion.div className="absolute w-[90vw] h-[70vh] bg-sky-50/80 dark:bg-slate-900/80 rounded-[50%] blur-[80px]" style={{ scale: cloudScale, top: '-10vh', right: '-15vw' }} />
+          <motion.div className="absolute w-[100vw] h-[50vh] bg-white dark:bg-[#0B1120] rounded-[50%] blur-[50px]" style={{ scale: cloudScale, top: '-30vh' }} />
         </motion.div>
 
         {/* Exiting Clouds (Bottom Edge) */}
@@ -74,9 +74,9 @@ export default function Manifesto() {
           className="absolute inset-0 flex justify-center items-center pointer-events-none"
           style={{ y: cloudExitY, opacity: cloudExitOpacity }}
         >
-          <div className="absolute w-[80vw] h-[60vh] bg-white rounded-[50%] blur-[60px]" style={{ bottom: '-20vh', right: '-10vw' }} />
-          <div className="absolute w-[90vw] h-[70vh] bg-sky-50/80 rounded-[50%] blur-[80px]" style={{ bottom: '-10vh', left: '-15vw' }} />
-          <div className="absolute w-[100vw] h-[50vh] bg-white rounded-[50%] blur-[50px]" style={{ bottom: '-30vh' }} />
+          <div className="absolute w-[80vw] h-[60vh] bg-white dark:bg-[#0B1120] rounded-[50%] blur-[60px]" style={{ bottom: '-20vh', right: '-10vw' }} />
+          <div className="absolute w-[90vw] h-[70vh] bg-sky-50/80 dark:bg-slate-900/80 rounded-[50%] blur-[80px]" style={{ bottom: '-10vh', left: '-15vw' }} />
+          <div className="absolute w-[100vw] h-[50vh] bg-white dark:bg-[#0B1120] rounded-[50%] blur-[50px]" style={{ bottom: '-30vh' }} />
         </motion.div>
 
 
@@ -90,7 +90,7 @@ export default function Manifesto() {
           >
             {/* Decorative Chapter Number */}
             <motion.div 
-              className="font-sans text-sky-900/30 font-bold text-lg tracking-[0.4em] mb-4"
+              className="font-sans text-sky-900/30 dark:text-sky-100/30 font-bold text-lg tracking-[0.4em] mb-4"
               style={{ opacity: textOpacity, y: textY }}
             >
               CHAPTER // 02
@@ -98,19 +98,19 @@ export default function Manifesto() {
 
             {/* Headline */}
             <motion.div 
-              className="font-playfair text-6xl md:text-8xl lg:text-[7rem] leading-[0.9] font-black text-[#0a192f] uppercase tracking-tighter"
+              className="font-playfair text-6xl md:text-8xl lg:text-[7rem] leading-[0.9] font-black text-[#0a192f] dark:text-white uppercase tracking-tighter"
               style={{ opacity: textOpacity, y: textY }}
             >
               Vision is
             </motion.div>
             <motion.div 
-              className="font-playfair text-6xl md:text-8xl lg:text-[7rem] leading-[0.9] font-black text-[#0a192f] uppercase tracking-tighter pl-0 md:pl-12"
+              className="font-playfair text-6xl md:text-8xl lg:text-[7rem] leading-[0.9] font-black text-[#0a192f] dark:text-white uppercase tracking-tighter pl-0 md:pl-12"
               style={{ opacity: textOpacity, y: textY }}
             >
               Nothing
             </motion.div>
             <motion.div 
-              className="font-cormorant text-5xl md:text-7xl lg:text-[6rem] leading-none font-light italic text-sky-800 lowercase tracking-normal pl-0 md:pl-24 pt-4"
+              className="font-cormorant text-5xl md:text-7xl lg:text-[6rem] leading-none font-light italic text-sky-800 dark:text-sky-300 lowercase tracking-normal pl-0 md:pl-24 pt-4"
               style={{ opacity: textOpacity, y: textY }}
             >
               without execution.
@@ -124,19 +124,19 @@ export default function Manifesto() {
           >
             {/* Elegant Line Divider */}
             <motion.div 
-              className="w-full h-[1px] bg-[#0a192f] origin-left"
+              className="w-full h-[1px] bg-[#0a192f] dark:bg-white/50 origin-left"
               style={{ scaleX: lineScaleX }}
             />
 
             <motion.p 
-              className="font-sans text-lg md:text-xl text-slate-700 font-light leading-relaxed tracking-wide text-justify"
+              className="font-sans text-lg md:text-xl text-slate-700 dark:text-slate-300 font-light leading-relaxed tracking-wide text-justify"
               style={{ opacity: pOpacity, y: p1Y }}
             >
               As a filmmaker, I paint with light. As a developer, I build with logic. I bridge the gap between cinematic storytelling and bleeding-edge digital design.
             </motion.p>
 
             <motion.p 
-              className="font-playfair text-xl md:text-2xl text-[#0a192f] font-medium leading-relaxed italic"
+              className="font-playfair text-xl md:text-2xl text-[#0a192f] dark:text-white font-medium leading-relaxed italic"
               style={{ opacity: pOpacity, y: p2Y }}
             >
               "Every cut, every pixel, every line of code serves one purpose: to make them feel something."
