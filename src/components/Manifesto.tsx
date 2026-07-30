@@ -1,10 +1,13 @@
 'use client';
 
 import { motion, useScroll, useTransform } from 'framer-motion';
+import { useTheme } from './ThemeProvider';
 import { useRef } from 'react';
 
 export default function Manifesto() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const { theme } = useTheme();
+  const isNight = theme === 'night';
   
   // Track scroll progress within this 150vh section (much faster scroll)
   const { scrollYProgress } = useScroll({
@@ -55,7 +58,7 @@ export default function Manifesto() {
         {/* --- CLOUD BACKGROUND LAYER --- */}
         {/* The solid white core that holds the content, fading in/out */}
         <motion.div 
-          className="absolute inset-0 bg-white dark:bg-[#0B1120]"
+          className={`absolute inset-0 transition-colors duration-1000 ${isNight ? 'bg-[#0B1120]' : 'bg-white'}`}
           style={{ opacity: bgOpacity }}
         />
 
@@ -64,9 +67,9 @@ export default function Manifesto() {
           className="absolute inset-0 flex justify-center items-center pointer-events-none"
           style={{ y: cloudRiseY, opacity: cloudOpacity }}
         >
-          <motion.div className="absolute w-[80vw] h-[60vh] bg-white dark:bg-[#0B1120] rounded-[50%] blur-[60px]" style={{ scale: cloudScale, top: '-20vh', left: '-10vw' }} />
-          <motion.div className="absolute w-[90vw] h-[70vh] bg-sky-50/80 dark:bg-slate-900/80 rounded-[50%] blur-[80px]" style={{ scale: cloudScale, top: '-10vh', right: '-15vw' }} />
-          <motion.div className="absolute w-[100vw] h-[50vh] bg-white dark:bg-[#0B1120] rounded-[50%] blur-[50px]" style={{ scale: cloudScale, top: '-30vh' }} />
+          <motion.div className={`absolute w-[80vw] h-[60vh] rounded-[50%] blur-[60px] transition-colors duration-1000 ${isNight ? 'bg-[#0B1120]' : 'bg-white'}`} style={{ scale: cloudScale, top: '-20vh', left: '-10vw' }} />
+          <motion.div className={`absolute w-[90vw] h-[70vh] rounded-[50%] blur-[80px] transition-colors duration-1000 ${isNight ? 'bg-slate-900/80' : 'bg-sky-50/80'}`} style={{ scale: cloudScale, top: '-10vh', right: '-15vw' }} />
+          <motion.div className={`absolute w-[100vw] h-[50vh] rounded-[50%] blur-[50px] transition-colors duration-1000 ${isNight ? 'bg-[#0B1120]' : 'bg-white'}`} style={{ scale: cloudScale, top: '-30vh' }} />
         </motion.div>
 
         {/* Exiting Clouds (Bottom Edge) */}
@@ -74,9 +77,9 @@ export default function Manifesto() {
           className="absolute inset-0 flex justify-center items-center pointer-events-none"
           style={{ y: cloudExitY, opacity: cloudExitOpacity }}
         >
-          <div className="absolute w-[80vw] h-[60vh] bg-white dark:bg-[#0B1120] rounded-[50%] blur-[60px]" style={{ bottom: '-20vh', right: '-10vw' }} />
-          <div className="absolute w-[90vw] h-[70vh] bg-sky-50/80 dark:bg-slate-900/80 rounded-[50%] blur-[80px]" style={{ bottom: '-10vh', left: '-15vw' }} />
-          <div className="absolute w-[100vw] h-[50vh] bg-white dark:bg-[#0B1120] rounded-[50%] blur-[50px]" style={{ bottom: '-30vh' }} />
+          <div className={`absolute w-[80vw] h-[60vh] rounded-[50%] blur-[60px] transition-colors duration-1000 ${isNight ? 'bg-[#0B1120]' : 'bg-white'}`} style={{ bottom: '-20vh', right: '-10vw' }} />
+          <div className={`absolute w-[90vw] h-[70vh] rounded-[50%] blur-[80px] transition-colors duration-1000 ${isNight ? 'bg-slate-900/80' : 'bg-sky-50/80'}`} style={{ bottom: '-10vh', left: '-15vw' }} />
+          <div className={`absolute w-[100vw] h-[50vh] rounded-[50%] blur-[50px] transition-colors duration-1000 ${isNight ? 'bg-[#0B1120]' : 'bg-white'}`} style={{ bottom: '-30vh' }} />
         </motion.div>
 
 
@@ -90,7 +93,7 @@ export default function Manifesto() {
           >
             {/* Decorative Chapter Number */}
             <motion.div 
-              className="font-sans text-sky-900/30 dark:text-sky-100/30 font-bold text-lg tracking-[0.4em] mb-4"
+              className={`font-sans font-bold text-lg tracking-[0.4em] mb-4 transition-colors duration-1000 ${isNight ? 'text-sky-100/30' : 'text-sky-900/30'}`}
               style={{ opacity: textOpacity, y: textY }}
             >
               CHAPTER // 02
@@ -98,19 +101,19 @@ export default function Manifesto() {
 
             {/* Headline */}
             <motion.div 
-              className="font-playfair text-6xl md:text-8xl lg:text-[7rem] leading-[0.9] font-black text-[#0a192f] dark:text-white uppercase tracking-tighter"
+              className={`font-playfair text-6xl md:text-8xl lg:text-[7rem] leading-[0.9] font-black uppercase tracking-tighter transition-colors duration-1000 ${isNight ? 'text-white' : 'text-[#0a192f]'}`}
               style={{ opacity: textOpacity, y: textY }}
             >
               Vision is
             </motion.div>
             <motion.div 
-              className="font-playfair text-6xl md:text-8xl lg:text-[7rem] leading-[0.9] font-black text-[#0a192f] dark:text-white uppercase tracking-tighter pl-0 md:pl-12"
+              className={`font-playfair text-6xl md:text-8xl lg:text-[7rem] leading-[0.9] font-black uppercase tracking-tighter pl-0 md:pl-12 transition-colors duration-1000 ${isNight ? 'text-white' : 'text-[#0a192f]'}`}
               style={{ opacity: textOpacity, y: textY }}
             >
               Nothing
             </motion.div>
             <motion.div 
-              className="font-cormorant text-5xl md:text-7xl lg:text-[6rem] leading-none font-light italic text-sky-800 dark:text-sky-300 lowercase tracking-normal pl-0 md:pl-24 pt-4"
+              className={`font-cormorant text-5xl md:text-7xl lg:text-[6rem] leading-none font-light italic lowercase tracking-normal pl-0 md:pl-24 pt-4 transition-colors duration-1000 ${isNight ? 'text-sky-300' : 'text-sky-800'}`}
               style={{ opacity: textOpacity, y: textY }}
             >
               without execution.
@@ -124,19 +127,19 @@ export default function Manifesto() {
           >
             {/* Elegant Line Divider */}
             <motion.div 
-              className="w-full h-[1px] bg-[#0a192f] dark:bg-white/50 origin-left"
+              className={`w-full h-[1px] origin-left transition-colors duration-1000 ${isNight ? 'bg-white/50' : 'bg-[#0a192f]'}`}
               style={{ scaleX: lineScaleX }}
             />
 
             <motion.p 
-              className="font-sans text-lg md:text-xl text-slate-700 dark:text-slate-300 font-light leading-relaxed tracking-wide text-justify"
+              className={`font-sans text-lg md:text-xl font-light leading-relaxed tracking-wide text-justify transition-colors duration-1000 ${isNight ? 'text-slate-300' : 'text-slate-700'}`}
               style={{ opacity: pOpacity, y: p1Y }}
             >
               As a filmmaker, I paint with light. As a developer, I build with logic. I bridge the gap between cinematic storytelling and bleeding-edge digital design.
             </motion.p>
 
             <motion.p 
-              className="font-playfair text-xl md:text-2xl text-[#0a192f] dark:text-white font-medium leading-relaxed italic"
+              className={`font-playfair text-xl md:text-2xl font-medium leading-relaxed italic transition-colors duration-1000 ${isNight ? 'text-white' : 'text-[#0a192f]'}`}
               style={{ opacity: pOpacity, y: p2Y }}
             >
               "Every cut, every pixel, every line of code serves one purpose: to make them feel something."
