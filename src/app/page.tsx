@@ -3,9 +3,6 @@
 import CloudBackground from '@/components/CloudBackground';
 import HeroTags from '@/components/HeroTags';
 import HeroTextSequence from '@/components/HeroTextSequence';
-import Manifesto from '@/components/Manifesto';
-import Archive from '@/components/Archive';
-import Anatomy from '@/components/Anatomy';
 import { motion, useScroll, useTransform } from 'framer-motion';
 
 export default function Home() {
@@ -54,15 +51,6 @@ export default function Home() {
           <HeroTags />
         </div>
       </div>
-
-      {/* Act II: The Manifesto (Now includes cloud transitions natively) */}
-      <Manifesto />
-
-      {/* Act III: The Archive (Vertical Editorial Gallery) */}
-      <Archive />
-
-      {/* Act IV: Anatomy of a Frame (Interactive Slider) */}
-      <Anatomy />
 
     </main>
   );
