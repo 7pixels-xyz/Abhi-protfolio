@@ -1,23 +1,31 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 
 const tags = [
-  // Top Orbit (Y < 25%)
-  { id: 1, text: 'Designer', initialX: '15%', initialY: '18%', rotate: -3, cursorText: 'obsessed with aesthetics' },
-  { id: 2, text: 'Creative', initialX: '65%', initialY: '15%', rotate: 5, cursorText: 'out of the box thinking' },
-  { id: 4, text: 'Developer', initialX: '40%', initialY: '22%', rotate: 4, cursorText: 'i speak computer' },
+  // Top Orbit
+  { id: 1, text: 'Designer', initialX: '15%', initialY: '18%', mobileX: '5%', mobileY: '12%', rotate: -3, cursorText: 'obsessed with aesthetics' },
+  { id: 2, text: 'Creative', initialX: '65%', initialY: '15%', mobileX: '55%', mobileY: '18%', rotate: 5, cursorText: 'out of the box thinking' },
+  { id: 4, text: 'Developer', initialX: '40%', initialY: '22%', mobileX: '20%', mobileY: '26%', rotate: 4, cursorText: 'i speak computer' },
   
-  // Bottom Orbit (Y > 75%)
-  { id: 6, text: 'Copywriter', initialX: '20%', initialY: '78%', rotate: 6, cursorText: 'words that sell' },
-  { id: 5, text: 'Web Designer', initialX: '70%', initialY: '82%', rotate: -4, cursorText: 'pixel perfect execution' },
-  { id: 3, text: 'Builder', initialX: '85%', initialY: '76%', rotate: -2, cursorText: 'from scratch, always' },
-  { id: 7, text: 'Cinematographer', initialX: '45%', initialY: '88%', rotate: -3, cursorText: 'painting with light' },
+  // Bottom Orbit
+  { id: 6, text: 'Copywriter', initialX: '20%', initialY: '78%', mobileX: '10%', mobileY: '70%', rotate: 6, cursorText: 'words that sell' },
+  { id: 3, text: 'Builder', initialX: '85%', initialY: '76%', mobileX: '60%', mobileY: '75%', rotate: -2, cursorText: 'from scratch, always' },
+  { id: 5, text: 'Web Designer', initialX: '70%', initialY: '82%', mobileX: '25%', mobileY: '82%', rotate: -4, cursorText: 'pixel perfect execution' },
+  { id: 7, text: 'Cinematographer', initialX: '45%', initialY: '88%', mobileX: '15%', mobileY: '90%', rotate: -3, cursorText: 'painting with light' },
 ];
 
 export default function HeroTags() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile(); // Initial check
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   return (
     <div ref={containerRef} className="absolute inset-0 z-30 pointer-events-none">
@@ -29,11 +37,13 @@ export default function HeroTags() {
           dragElastic={0.2}
           whileDrag={{ scale: 1.05 }}
           whileHover={{ scale: 1.02 }}
-          initial={{
-            left: tag.initialX,
-            top: tag.initialY,
+          initial={false}
+          animate={{
+            left: isMobile ? tag.mobileX : tag.initialX,
+            top: isMobile ? tag.mobileY : tag.initialY,
             rotate: tag.rotate,
           }}
+          transition={{ type: 'spring', stiffness: 50, damping: 20 }}
           className="absolute pointer-events-auto draggable"
           style={{ willChange: 'transform' }}
           data-cursor-text={tag.cursorText || undefined}
