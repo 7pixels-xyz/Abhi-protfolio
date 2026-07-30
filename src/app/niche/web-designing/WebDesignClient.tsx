@@ -38,7 +38,7 @@ export default function WebDesignClient() {
             <span className="h-[1px] w-12 bg-white/30"></span>
           </div>
           
-          <h1 className="text-6xl md:text-[8rem] flex flex-col items-center leading-[0.9] mb-8">
+          <h1 className="text-5xl md:text-6xl lg:text-[8rem] flex flex-col items-center leading-[0.9] mb-8">
             <span className="font-sans font-black tracking-tighter uppercase text-transparent bg-clip-text bg-gradient-to-br from-white via-white to-white/40">7pixels</span>
             <span className="font-cormorant font-light italic tracking-widest text-[#2563EB]">Agency</span>
           </h1>
@@ -95,7 +95,7 @@ export default function WebDesignClient() {
             
             {/* Wing 01 */}
             <motion.div 
-               className="md:col-span-2 md:row-span-1 rounded-[2rem] bg-gradient-to-br from-white/10 to-white/5 border border-white/10 p-10 flex flex-col justify-between overflow-hidden group relative cursor-pointer"
+               className="md:col-span-2 md:row-span-1 rounded-[2rem] bg-gradient-to-br from-white/10 to-white/5 border border-white/10 p-6 md:p-10 flex flex-col justify-between overflow-hidden group relative cursor-pointer"
                whileHover={{ y: -5 }}
             >
                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&q=80')] bg-cover bg-center opacity-20 mix-blend-overlay group-hover:scale-105 transition-transform duration-1000 grayscale group-hover:grayscale-0"></div>
@@ -109,14 +109,14 @@ export default function WebDesignClient() {
                </div>
                
                <div className="relative z-10">
-                  <h3 className="font-cormorant italic text-5xl md:text-6xl mb-2 text-white">Interior Design</h3>
+                  <h3 className="font-cormorant italic text-4xl md:text-5xl lg:text-6xl mb-2 text-white">Interior Design</h3>
                   <p className="font-sans text-sm font-light text-white/60">Spatial aesthetics & geometric layouts</p>
                </div>
             </motion.div>
 
             {/* Wing 02 */}
             <motion.div 
-               className="md:col-span-1 md:row-span-2 rounded-[2rem] bg-[#2563EB]/10 border border-[#2563EB]/30 p-10 flex flex-col justify-between overflow-hidden group relative cursor-pointer"
+               className="md:col-span-1 md:row-span-2 rounded-[2rem] bg-[#2563EB]/10 border border-[#2563EB]/30 p-6 md:p-10 flex flex-col justify-between overflow-hidden group relative cursor-pointer"
                whileHover={{ y: -5 }}
             >
                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1555529733-0e670560f7e1?auto=format&fit=crop&q=80')] bg-cover bg-center opacity-10 mix-blend-overlay group-hover:scale-105 transition-transform duration-1000"></div>
@@ -127,14 +127,14 @@ export default function WebDesignClient() {
                </div>
                
                <div className="relative z-10 mt-32">
-                  <h3 className="font-sans font-black uppercase text-4xl tracking-tighter mb-2 text-white">Clinical & Dental</h3>
+                  <h3 className="font-sans font-black uppercase text-3xl md:text-4xl tracking-tighter mb-2 text-white">Clinical & Dental</h3>
                   <p className="font-sans text-sm font-light text-white/60">Trust-centric patient interfaces engineered for conversion.</p>
                </div>
             </motion.div>
 
             {/* Wing 03 */}
             <motion.div 
-               className="md:col-span-1 md:row-span-1 rounded-[2rem] bg-white/[0.03] border border-white/5 p-8 flex flex-col justify-between overflow-hidden group relative cursor-pointer"
+               className="md:col-span-1 md:row-span-1 rounded-[2rem] bg-white/[0.03] border border-white/5 p-6 md:p-8 flex flex-col justify-between overflow-hidden group relative cursor-pointer"
                whileHover={{ y: -5 }}
             >
                <div className="relative z-10 flex justify-between items-start">
@@ -148,7 +148,7 @@ export default function WebDesignClient() {
 
             {/* Wing 04 */}
             <motion.div 
-               className="md:col-span-1 md:row-span-1 rounded-[2rem] bg-white/[0.03] border border-white/5 p-8 flex flex-col justify-between overflow-hidden group relative cursor-pointer"
+               className="md:col-span-1 md:row-span-1 rounded-[2rem] bg-white/[0.03] border border-white/5 p-6 md:p-8 flex flex-col justify-between overflow-hidden group relative cursor-pointer"
                whileHover={{ y: -5 }}
             >
                <div className="relative z-10 flex justify-between items-start">
@@ -162,12 +162,12 @@ export default function WebDesignClient() {
 
             {/* Wing 05 */}
             <motion.div 
-               className="md:col-span-2 md:row-span-1 rounded-[2rem] bg-gradient-to-r from-white/[0.08] to-transparent border border-white/10 p-10 flex items-center justify-between overflow-hidden group relative cursor-pointer"
+               className="md:col-span-2 md:row-span-1 rounded-[2rem] bg-gradient-to-r from-white/[0.08] to-transparent border border-white/10 p-6 md:p-10 flex items-center justify-between overflow-hidden group relative cursor-pointer"
                whileHover={{ y: -5 }}
             >
                <div className="relative z-10">
                   <span className="font-mono text-[10px] uppercase tracking-widest text-white/40 block mb-4">Wing 05</span>
-                  <h3 className="font-sans font-black uppercase text-5xl tracking-tighter mb-2 text-white">SaaS & Tech</h3>
+                  <h3 className="font-sans font-black uppercase text-4xl md:text-5xl tracking-tighter mb-2 text-white">SaaS & Tech</h3>
                   <p className="font-sans text-sm font-light text-white/60">Strictly architectural conversion systems.</p>
                </div>
                

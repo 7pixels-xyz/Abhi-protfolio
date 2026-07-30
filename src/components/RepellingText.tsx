@@ -48,7 +48,7 @@ export default function RepellingText({ text, className = '', isVisible, highlig
         
         // Calculate the push offset for each word. Word 0 ("This") stays at 0.
         // Word 1 ("is") moves left. Word 2 ("Abhi") moves further left.
-        const pushOffset = isPushed ? -(wIdx * 3) : 0; 
+        const pushOffset = isPushed ? -(wIdx * 1.5) : 0; 
 
         return (
           <motion.div 
@@ -56,7 +56,7 @@ export default function RepellingText({ text, className = '', isVisible, highlig
             className={`flex ${isHighlighted ? 'font-bodoni italic' : ''}`} 
             style={{ color: isHighlighted ? highlightColor : undefined }}
             initial={{ x: 0 }}
-            animate={{ x: `${pushOffset}vw` }}
+            animate={{ x: `${pushOffset}em` }}
             transition={{ type: 'spring', stiffness: 200, damping: 15 }}
           >
             {word.split('').map((char, cIdx) => (

@@ -76,7 +76,7 @@ export default function Header() {
 
           const innerContent = (
             <div
-              className="relative px-6 py-3 cursor-pointer rounded-full overflow-hidden block"
+              className="relative px-4 py-2 md:px-6 md:py-3 cursor-pointer rounded-full overflow-hidden block"
               onMouseEnter={() => setHoveredIndex(index)}
               onMouseLeave={() => setHoveredIndex(null)}
               onClick={(e) => handleLinkClick(index, link.id, e)}
@@ -153,7 +153,7 @@ export default function Header() {
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.05 }}
-                  className="group relative px-8 py-4 cursor-pointer rounded-full overflow-hidden text-center block"
+                  className="group relative px-4 py-3 md:px-8 md:py-4 cursor-pointer rounded-full overflow-hidden text-center block"
                 >
                   {/* Sub-menu hover effect */}
                   <div className="absolute inset-0 bg-white/0 group-hover:bg-white/10 transition-colors duration-300 rounded-full" />

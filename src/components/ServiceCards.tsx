@@ -126,7 +126,7 @@ export default function ServiceCards({ isVisible }: ServiceCardsProps) {
               >
                 {/* Massive Dual-Font Title */}
                 <motion.h2 
-                  className="text-5xl md:text-7xl lg:text-[7vw] text-white whitespace-nowrap luxury-text-shadow drop-shadow-2xl flex items-center justify-center gap-[0.2em] pointer-events-none"
+                  className="text-3xl sm:text-4xl md:text-7xl lg:text-[7vw] text-white whitespace-nowrap luxury-text-shadow drop-shadow-2xl flex items-center justify-center gap-[0.2em] pointer-events-none"
                   animate={{ 
                     opacity: isFaded ? 0.2 : 1,
                     scale: isHovered ? 1.05 : 1
@@ -165,7 +165,7 @@ export default function ServiceCards({ isVisible }: ServiceCardsProps) {
                   }}
                   transition={{ duration: 0.4, ease: 'easeOut' }}
                 >
-                  <p className="font-sans text-xs md:text-sm tracking-[0.25em] uppercase text-white/80 font-semibold text-center max-w-[80%] mx-auto">
+                  <p className="font-sans text-[10px] md:text-xs tracking-[0.25em] uppercase text-white/80 font-semibold text-center max-w-[80%] mx-auto">
                     {service.description}
                   </p>
                 </motion.div>

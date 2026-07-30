@@ -20,7 +20,7 @@ export default function LightbulbToggle() {
   const isNight = theme === 'night';
 
   return (
-    <div className="fixed top-0 right-4 md:right-12 z-[100] flex flex-col items-center origin-top pb-20">
+    <div className="fixed top-0 right-4 md:right-12 z-[100] flex flex-col items-center origin-top-right scale-75 md:scale-100 pb-20">
       {/* The Wire connecting to ceiling */}
       <motion.div 
          className="w-1 bg-[#222] shadow-[inset_1px_0_2px_rgba(255,255,255,0.2)] origin-top" 
