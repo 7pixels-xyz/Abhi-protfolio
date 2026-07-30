@@ -113,50 +113,101 @@ export default function HeroTextSequence() {
       <div className="relative w-full max-w-7xl h-full px-4 text-center">
         {/* Step 0: "This is Abhi" and the bouncing portrait */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <motion.div 
-            className="relative flex items-center justify-center w-max mx-auto pointer-events-none"
-            initial={{ x: 0 }}
-            animate={{ x: 0 }} // We no longer shift the whole block; we compress it internally
-          >
-            
-            <motion.div className="flex-shrink-0 z-50 pointer-events-auto">
-              <RepellingText 
-                text="This is Abhi" 
-                isVisible={activeStep === 0}
-                highlightWord="Abhi"
-                isPushed={showImage}
-                isMobile={isMobile}
-                className="text-6xl sm:text-7xl md:text-8xl lg:text-[9vw] font-playfair font-bold md:font-medium text-white tracking-tight luxury-text-shadow drop-shadow-2xl whitespace-nowrap"
-              />
-            </motion.div>
-
-            <AnimatePresence>
-              {showImage && activeStep === 0 && (
-                <motion.div
-                  initial={{ opacity: 0, x: '40vw', rotate: 90 }}
-                  animate={{ 
-                    opacity: 1, 
-                    x: showImage ? (isMobile ? '-15vw' : '-6vw') : 0, 
-                    rotate: 0 
-                  }}
-                  exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.3 } }}
-                  transition={{ type: 'spring', stiffness: 200, damping: 15 }} // Changed to spring so it bounces when it hits and pushes
-                  onAnimationComplete={() => setImageLanded(true)} // Triggers the compression push
-
-                  className="absolute top-1/2 -translate-y-1/2 -right-[120px] md:-right-[220px] w-[80px] h-[80px] md:w-[180px] md:h-[180px] rounded-full overflow-hidden border-[4px] border-white/90 shadow-[0_30px_60px_rgba(0,0,0,0.4)] flex-shrink-0 pointer-events-auto cursor-none z-40"
-                  data-cursor-type="drag"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  drag
-                  dragConstraints={{ left: -30, right: 30, top: -30, bottom: 30 }}
-                  dragElastic={0.4}
-                >
-                  <img src="/abhi.jpg" alt="Abhi" className="w-full h-full object-cover pointer-events-none" />
+          {isMobile ? (
+            <div className="relative flex flex-col items-center justify-center w-full mx-auto pointer-events-none gap-4">
+              <motion.div 
+                className="text-6xl font-bold font-sans text-white tracking-tight luxury-text-shadow drop-shadow-2xl z-50 pointer-events-auto"
+                initial={{ opacity: 0, y: 50, filter: 'blur(10px)' }}
+                animate={{ opacity: activeStep === 0 ? 1 : 0, y: activeStep === 0 ? 0 : -30, filter: activeStep === 0 ? 'blur(0px)' : 'blur(10px)', pointerEvents: activeStep === 0 ? 'auto' : 'none' }}
+                transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+              >
+                This is
+              </motion.div>
+              <motion.div 
+                className="relative flex items-center justify-center w-max mx-auto pointer-events-none"
+                initial={{ x: 0 }}
+                animate={{ x: 0 }} 
+              >
+                <motion.div className="flex-shrink-0 z-50 pointer-events-auto">
+                  <RepellingText 
+                    text="Abhi" 
+                    isVisible={activeStep === 0}
+                    highlightWord="Abhi"
+                    isPushed={showImage}
+                    isMobile={isMobile}
+                    className="text-8xl font-playfair font-bold text-white tracking-tight luxury-text-shadow drop-shadow-2xl whitespace-nowrap"
+                  />
                 </motion.div>
-              )}
-            </AnimatePresence>
 
-          </motion.div>
+                <AnimatePresence>
+                  {showImage && activeStep === 0 && (
+                    <motion.div
+                      initial={{ opacity: 0, x: '40vw', rotate: 90 }}
+                      animate={{ opacity: 1, x: showImage ? '-20vw' : 0, rotate: 0 }}
+                      exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.3 } }}
+                      transition={{ type: 'spring', stiffness: 200, damping: 15 }} 
+                      onAnimationComplete={() => setImageLanded(true)} 
+
+                      className="absolute top-1/2 -translate-y-1/2 -right-[120px] w-[90px] h-[90px] rounded-full overflow-hidden border-[4px] border-white/90 shadow-[0_30px_60px_rgba(0,0,0,0.4)] flex-shrink-0 pointer-events-auto cursor-none z-40"
+                      data-cursor-type="drag"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      drag
+                      dragConstraints={{ left: -30, right: 30, top: -30, bottom: 30 }}
+                      dragElastic={0.4}
+                    >
+                      <img src="/abhi.jpg" alt="Abhi" className="w-full h-full object-cover pointer-events-none" />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            </div>
+          ) : (
+            <motion.div 
+              className="relative flex items-center justify-center w-max mx-auto pointer-events-none"
+              initial={{ x: 0 }}
+              animate={{ x: 0 }} // We no longer shift the whole block; we compress it internally
+            >
+              
+              <motion.div className="flex-shrink-0 z-50 pointer-events-auto">
+                <RepellingText 
+                  text="This is Abhi" 
+                  isVisible={activeStep === 0}
+                  highlightWord="Abhi"
+                  isPushed={showImage}
+                  isMobile={isMobile}
+                  className="text-6xl sm:text-7xl md:text-8xl lg:text-[9vw] font-playfair font-bold md:font-medium text-white tracking-tight luxury-text-shadow drop-shadow-2xl whitespace-nowrap"
+                />
+              </motion.div>
+
+              <AnimatePresence>
+                {showImage && activeStep === 0 && (
+                  <motion.div
+                    initial={{ opacity: 0, x: '40vw', rotate: 90 }}
+                    animate={{ 
+                      opacity: 1, 
+                      x: showImage ? '-6vw' : 0, 
+                      rotate: 0 
+                    }}
+                    exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.3 } }}
+                    transition={{ type: 'spring', stiffness: 200, damping: 15 }} // Changed to spring so it bounces when it hits and pushes
+                    onAnimationComplete={() => setImageLanded(true)} // Triggers the compression push
+
+                    className="absolute top-1/2 -translate-y-1/2 -right-[120px] md:-right-[220px] w-[80px] h-[80px] md:w-[180px] md:h-[180px] rounded-full overflow-hidden border-[4px] border-white/90 shadow-[0_30px_60px_rgba(0,0,0,0.4)] flex-shrink-0 pointer-events-auto cursor-none z-40"
+                    data-cursor-type="drag"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    drag
+                    dragConstraints={{ left: -30, right: 30, top: -30, bottom: 30 }}
+                    dragElastic={0.4}
+                  >
+                    <img src="/abhi.jpg" alt="Abhi" className="w-full h-full object-cover pointer-events-none" />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+            </motion.div>
+          )}
         </div>
         
         {/* Jack of all trades text (Step 1 & 2) */}
