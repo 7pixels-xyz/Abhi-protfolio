@@ -30,6 +30,18 @@ export default function HeroTextSequence() {
   const [activeStep, setActiveStep] = useState(0);
   const [showImage, setShowImage] = useState(false);
   const [imageLanded, setImageLanded] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [vh, setVh] = useState(1000); // Default to a reasonable value for SSR
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+      setVh(window.innerHeight);
+    };
+    handleResize(); // Initial check
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     // Delay the image reveal so the text fades in first
@@ -44,18 +56,23 @@ export default function HeroTextSequence() {
 
   useEffect(() => {
     const handleScroll = (y: number) => {
-      if (y < 400) {
+      // 0 to 0.5 vh
+      if (y < vh * 0.5) {
         setActiveStep(0);
-      } else if (y >= 400 && y < 1400) {
+      } 
+      // 0.5 to 1.5 vh
+      else if (y >= vh * 0.5 && y < vh * 1.5) {
         setActiveStep(1);
-      } else {
+      } 
+      // past 1.5 vh
+      else {
         setActiveStep(2);
       }
     };
 
     const unsubscribe = scrollY.on('change', handleScroll);
     return () => unsubscribe();
-  }, [scrollY]);
+  }, [scrollY, vh]);
 
   const stepVariants = {
     centered: {
@@ -70,11 +87,23 @@ export default function HeroTextSequence() {
       left: "4%",
       x: "0%",
       y: "0%",
-      scale: 0.3,
+      scale: isMobile ? 0.4 : 0.3, // Slightly larger on mobile so it's readable
     }
   };
 
-  const globalY = useTransform(scrollY, [1800, 2600], [0, -1200]);
+  // The parent container is 250vh. 
+  // By 1.5vh scrolled, the parent is almost ending. 
+  // We want to slide it up starting at 1.8vh to clear the screen for Manifesto.
+  // We'll use a state-based transform to avoid React render issues with useTransform directly inside render if vh changes.
+  const [globalYRange, setGlobalYRange] = useState({ input: [1800, 2600], output: [0, -1200] });
+  useEffect(() => {
+    setGlobalYRange({
+      input: [vh * 1.8, vh * 2.5],
+      output: [0, -vh * 1.5]
+    });
+  }, [vh]);
+
+  const globalY = useTransform(scrollY, globalYRange.input, globalYRange.output);
 
   return (
     <motion.div 
@@ -96,6 +125,7 @@ export default function HeroTextSequence() {
                 isVisible={activeStep === 0}
                 highlightWord="Abhi"
                 isPushed={showImage}
+                isMobile={isMobile}
                 className="text-5xl sm:text-6xl md:text-8xl lg:text-[9vw] font-playfair font-medium text-white tracking-tight luxury-text-shadow drop-shadow-2xl whitespace-nowrap"
               />
             </motion.div>
@@ -103,13 +133,18 @@ export default function HeroTextSequence() {
             <AnimatePresence>
               {showImage && activeStep === 0 && (
                 <motion.div
-                  initial={{ opacity: 0, x: '40vw', rotate: 90 }}
-                  animate={{ opacity: 1, x: showImage ? '-10vw' : 0, rotate: 0 }}
+                  initial={{ opacity: 0, x: isMobile ? 0 : '40vw', y: isMobile ? '40vh' : 0, rotate: 90 }}
+                  animate={{ 
+                    opacity: 1, 
+                    x: isMobile ? 0 : (showImage ? '-10vw' : 0), 
+                    y: isMobile ? (showImage ? '-5vh' : 0) : 0, 
+                    rotate: 0 
+                  }}
                   exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.3 } }}
                   transition={{ type: 'spring', stiffness: 200, damping: 15 }} // Changed to spring so it bounces when it hits and pushes
                   onAnimationComplete={() => setImageLanded(true)} // Triggers the compression push
 
-                  className="absolute top-1/2 -translate-y-1/2 -right-[120px] md:-right-[220px] w-[80px] h-[80px] md:w-[180px] md:h-[180px] rounded-full overflow-hidden border-[4px] border-white/90 shadow-[0_30px_60px_rgba(0,0,0,0.4)] flex-shrink-0 pointer-events-auto cursor-none z-40"
+                  className={`absolute ${isMobile ? '-bottom-[120px] left-1/2 -translate-x-1/2' : 'top-1/2 -translate-y-1/2 -right-[220px]'} w-[80px] h-[80px] md:w-[180px] md:h-[180px] rounded-full overflow-hidden border-[4px] border-white/90 shadow-[0_30px_60px_rgba(0,0,0,0.4)] flex-shrink-0 pointer-events-auto cursor-none z-40`}
                   data-cursor-type="drag"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}

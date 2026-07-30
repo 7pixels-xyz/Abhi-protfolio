@@ -10,9 +10,18 @@ interface RepellingTextProps {
   highlightWord?: string;
   highlightColor?: string;
   isPushed?: boolean;
+  isMobile?: boolean;
 }
 
-export default function RepellingText({ text, className = '', isVisible, highlightWord, highlightColor = '#FFD700', isPushed = false }: RepellingTextProps) {
+export default function RepellingText({ 
+  text, 
+  isVisible, 
+  highlightWord = '', 
+  highlightColor = '#FFD700',
+  isPushed = false,
+  className = '',
+  isMobile = false
+}: RepellingTextProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   
   // Use MotionValues instead of state to prevent re-rendering the whole tree on mouse move
@@ -33,7 +42,7 @@ export default function RepellingText({ text, className = '', isVisible, highlig
   return (
     <motion.div
       ref={containerRef}
-      className={`flex flex-wrap justify-center gap-[1.5ch] ${className}`}
+      className={`flex flex-col md:flex-row flex-wrap justify-center gap-[1.5ch] ${className}`}
       initial={{ opacity: 0, y: 50, filter: 'blur(10px)' }}
       animate={{ 
         opacity: isVisible ? 1 : 0, 
@@ -48,15 +57,17 @@ export default function RepellingText({ text, className = '', isVisible, highlig
         
         // Calculate the push offset for each word. Word 0 ("This") stays at 0.
         // Word 1 ("is") moves left. Word 2 ("Abhi") moves further left.
-        const pushOffset = isPushed ? -(wIdx * 1.5) : 0; 
+        // On mobile, we push UP (y axis). On desktop, we push LEFT (x axis).
+        // Reduced mobile compression from 0.8 to 0.2 to prevent words overlapping.
+        const pushOffset = isPushed ? -(wIdx * (isMobile ? 0.2 : 1.5)) : 0; 
 
         return (
           <motion.div 
             key={wIdx} 
             className={`flex ${isHighlighted ? 'font-bodoni italic' : ''}`} 
             style={{ color: isHighlighted ? highlightColor : undefined }}
-            initial={{ x: 0 }}
-            animate={{ x: `${pushOffset}em` }}
+            initial={{ x: 0, y: 0 }}
+            animate={isMobile ? { y: `${pushOffset}em`, x: 0 } : { x: `${pushOffset}em`, y: 0 }}
             transition={{ type: 'spring', stiffness: 200, damping: 15 }}
           >
             {word.split('').map((char, cIdx) => (
