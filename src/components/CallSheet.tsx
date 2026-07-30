@@ -1,8 +1,10 @@
 'use client';
 
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useTheme } from '@/components/ThemeProvider';
 
-export default function CallSheet() {
+const WebDesignFooter = () => {
   return (
     <div className="w-full bg-transparent px-2 md:px-4 pb-2 md:pb-4 pt-12 md:pt-24 z-50 relative">
       <footer className="w-full bg-[#1b3f55] rounded-[2rem] md:rounded-[3rem] text-[#f4ece3] flex flex-col items-center justify-between pt-16 md:pt-32 pb-8 px-6 md:px-12 relative overflow-hidden shadow-2xl">
@@ -80,4 +82,82 @@ export default function CallSheet() {
       </footer>
     </div>
   );
+};
+
+const GlobalFooter = () => {
+  const { theme } = useTheme();
+  const isNight = theme === 'night';
+  
+  return (
+    <div className="w-full bg-transparent px-2 md:px-4 pb-2 md:pb-4 pt-12 md:pt-24 z-50 relative">
+      <footer className={`w-full ${isNight ? 'bg-[#050505]' : 'bg-[#0a0a0a]'} rounded-[2rem] md:rounded-[3rem] text-[#f4ece3] flex flex-col items-center justify-between pt-16 md:pt-32 pb-8 px-6 md:px-12 relative overflow-hidden shadow-2xl`}>
+        
+        {/* Subtle glowing orb in background */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vw] bg-white/5 rounded-full blur-[120px] pointer-events-none" />
+
+        {/* Top Indicator */}
+        <div className="relative z-10 flex flex-col items-center mb-12 md:mb-20">
+          <div className="w-px h-16 md:h-24 bg-gradient-to-b from-transparent to-white/30 mb-6" />
+          <span className="font-mono text-[9px] md:text-xs uppercase tracking-[0.4em] text-white/50">
+            Next Chapter
+          </span>
+        </div>
+
+        {/* Huge CTA Text */}
+        <div className="relative z-10 text-center mb-16 md:mb-24 w-full flex flex-col items-center">
+           <Link href="/contact" className="group relative block w-max mx-auto">
+             <h2 className="font-sans font-black text-[12vw] leading-none uppercase tracking-tighter text-white/90 group-hover:text-white transition-colors duration-500">
+               Let's Talk
+             </h2>
+             {/* Animated Underline */}
+             <span className="absolute -bottom-4 left-0 w-0 h-[2px] bg-white transition-all duration-700 group-hover:w-full" />
+           </Link>
+           <p className="mt-8 font-cormorant italic text-2xl md:text-4xl text-white/60 tracking-wide">
+             Available for new projects.
+           </p>
+        </div>
+
+        {/* Brand Asset */}
+        <div className="relative z-10 flex flex-col items-center justify-center mb-20 md:mb-32">
+           <div className="w-16 h-16 md:w-24 md:h-24 border border-white/20 rounded-full flex items-center justify-center relative group overflow-hidden cursor-pointer hover:border-white/50 transition-colors">
+              <span className="font-sans font-black text-xl md:text-3xl tracking-tighter uppercase relative z-10 group-hover:scale-110 transition-transform duration-500">
+                A.
+              </span>
+              <div className="absolute inset-0 bg-white/10 translate-y-[100%] group-hover:translate-y-0 transition-transform duration-500 ease-[0.16,1,0.3,1]" />
+           </div>
+        </div>
+
+        {/* Footer Bottom Row */}
+        <div className="relative z-10 w-full flex flex-col lg:flex-row items-center justify-between gap-8 pt-8 border-t border-white/10 font-mono text-[8px] md:text-[9px] uppercase tracking-[0.2em] text-white/50">
+           
+           <div className="flex items-center gap-3">
+             <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+             <p>Systems Online / {new Date().getFullYear()}</p>
+           </div>
+
+           <div className="flex flex-wrap items-center justify-center gap-6 md:gap-12">
+              <Link href="#" className="hover:text-white transition-colors">Instagram</Link>
+              <Link href="#" className="hover:text-white transition-colors">Twitter</Link>
+              <Link href="#" className="hover:text-white transition-colors">LinkedIn</Link>
+              <Link href="#" className="hover:text-white transition-colors">Vimeo</Link>
+           </div>
+
+           <div className="text-center md:text-right">
+             <p>© Abhi Portfolio. Crafted with precision.</p>
+           </div>
+
+        </div>
+      </footer>
+    </div>
+  );
+};
+
+export default function CallSheet() {
+  const pathname = usePathname();
+  
+  if (pathname === '/niche/web-designing') {
+    return <WebDesignFooter />;
+  }
+  
+  return <GlobalFooter />;
 }
