@@ -6,8 +6,8 @@ import { useTheme } from '@/components/ThemeProvider';
 
 const WebDesignFooter = () => {
   return (
-    <div className="w-full bg-transparent px-2 md:px-4 pb-2 md:pb-4 pt-12 md:pt-24 z-50 relative">
-      <footer className="w-full bg-[#1b3f55] rounded-[2rem] md:rounded-[3rem] text-[#f4ece3] flex flex-col items-center justify-between pt-16 md:pt-32 pb-8 px-6 md:px-12 relative overflow-hidden shadow-2xl">
+    <div className="w-full bg-transparent px-0 pt-12 md:pt-24 z-50 relative">
+      <footer className="w-full bg-[#1b3f55] rounded-t-[2rem] md:rounded-t-[3rem] text-[#f4ece3] flex flex-col items-center justify-between pt-16 md:pt-32 pb-8 px-6 md:px-12 relative overflow-hidden shadow-2xl">
         
         {/* Subtle Grid Background */}
         <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
@@ -89,8 +89,8 @@ const GlobalFooter = () => {
   const isNight = theme === 'night';
   
   return (
-    <div className="w-full bg-transparent px-2 md:px-4 pb-2 md:pb-4 pt-12 md:pt-24 z-50 relative">
-      <footer className={`w-full ${isNight ? 'bg-[#050505]' : 'bg-[#0a0a0a]'} rounded-[2rem] md:rounded-[3rem] text-[#f4ece3] flex flex-col items-center justify-between pt-16 md:pt-32 pb-8 px-6 md:px-12 relative overflow-hidden shadow-2xl`}>
+    <div className="w-full bg-transparent px-0 pt-12 md:pt-24 z-50 relative">
+      <footer className={`w-full ${isNight ? 'bg-[#050505]' : 'bg-[#0a0a0a]'} rounded-t-[2rem] md:rounded-t-[3rem] text-[#f4ece3] flex flex-col items-center justify-between pt-16 md:pt-32 pb-8 px-6 md:px-12 relative overflow-hidden shadow-2xl`}>
         
         {/* Subtle glowing orb in background */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vw] bg-white/5 rounded-full blur-[120px] pointer-events-none" />
