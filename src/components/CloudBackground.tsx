@@ -60,7 +60,7 @@ export default function CloudBackground() {
           y: Math.random() * canvas.height,
           radius: Math.random() * 1.5,
           opacity: Math.random(),
-          twinkleSpeed: 0.005 + Math.random() * 0.015
+          twinkleSpeed: 0.001 + Math.random() * 0.002
        });
     }
 
