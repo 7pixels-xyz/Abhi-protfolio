@@ -22,6 +22,26 @@ export default function Header() {
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [isNicheOpen, setIsNicheOpen] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
+
+  // Click outside to close
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+      if (headerRef.current && !headerRef.current.contains(event.target as Node)) {
+        setIsNicheOpen(false);
+      }
+    };
+
+    if (isNicheOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('touchstart', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
+  }, [isNicheOpen]);
 
   // Cleanup timeout on unmount
   useEffect(() => {
@@ -57,6 +77,7 @@ export default function Header() {
 
   return (
     <motion.header 
+      ref={headerRef}
       className="fixed top-8 left-1/2 -translate-x-1/2 z-[100] flex flex-col items-center pointer-events-auto"
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
@@ -148,7 +169,7 @@ export default function Header() {
             className="absolute top-full w-max p-3 rounded-[2rem] premium-glass bg-white/5 border border-white/20 shadow-[0_30px_60px_rgba(0,0,0,0.5)] backdrop-blur-2xl flex flex-col gap-1 origin-top"
           >
             {nicheLinks.map((niche, i) => (
-              <Link href={niche.href} key={niche.id} passHref>
+              <Link href={niche.href} key={niche.id} passHref onClick={() => setIsNicheOpen(false)}>
                 <motion.div 
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
