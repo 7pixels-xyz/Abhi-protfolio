@@ -98,50 +98,39 @@ export default function ServiceCards({ isVisible }: ServiceCardsProps) {
       </motion.div>
 
       {/* 
-        EDITORIAL MENU LIST 
-        Massive typography that reacts to hover
+        DESKTOP EDITORIAL MENU 
+        Massive typography that reacts to hover (Hidden on Mobile)
       */}
-      <div className="relative z-10 w-full flex flex-col md:items-center md:justify-center gap-12 md:gap-2 mt-16 md:mt-20 pointer-events-auto overflow-hidden px-4 md:px-0">
+      <div className="relative z-10 w-full hidden md:flex flex-col items-center justify-center gap-2 mt-20 pointer-events-auto overflow-hidden">
         {services.map((service, index) => {
           const isHovered = activeService === service.id;
           const isFaded = activeService !== null && activeService !== service.id;
 
-          // Split title into Sans and Serif parts for the dual-font premium look
           const parts = service.title.split(' ');
           const firstPart = parts[0];
-          const secondPart = parts.slice(1).join(' ') || (service.id === 3 ? 'tography' : ''); // Fallback for Cinematography
+          const secondPart = parts.slice(1).join(' ') || (service.id === 3 ? 'tography' : '');
           
           const displayFirst = service.id === 3 ? 'CINEMA' : firstPart.toUpperCase();
           const displaySecond = secondPart.toLowerCase();
 
-          // Alternating alignment for mobile
-          const isLeft = index % 2 === 0;
-
           return (
-            <Link key={service.id} href={service.href} passHref className="block w-full md:w-fit md:mx-auto">
+            <Link key={service.id} href={service.href} passHref className="block w-fit mx-auto">
               <motion.div 
-                className={`relative cursor-pointer flex flex-col py-2 md:py-6 group pointer-events-auto w-full md:items-center ${isLeft ? 'items-start text-left' : 'items-end text-right'}`}
+                className="relative cursor-pointer flex flex-col py-6 group pointer-events-auto items-center text-center"
                 onHoverStart={() => setActiveService(service.id)}
                 onHoverEnd={() => setActiveService(null)}
                 initial={{ y: 50, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.8, delay: 0.5 + index * 0.1, ease: [0.16, 1, 0.3, 1] }}
               >
-                {/* Mobile Background Index Number */}
-                <div className={`md:hidden absolute top-1/2 -translate-y-1/2 ${isLeft ? 'right-0' : 'left-0'} text-white/[0.03] font-sans font-black text-[8rem] tracking-tighter leading-none pointer-events-none z-0`}>
-                  0{index + 1}
-                </div>
-
-                {/* Massive Dual-Font Title */}
                 <motion.h2 
-                  className="relative z-10 text-[3.8rem] leading-[0.85] sm:text-6xl md:text-7xl lg:text-[7vw] md:leading-normal text-white luxury-text-shadow drop-shadow-2xl flex flex-col md:flex-row md:items-center md:justify-center gap-0 md:gap-[0.2em] pointer-events-none w-full md:w-auto"
+                  className="relative z-10 text-6xl md:text-7xl lg:text-[7vw] leading-normal text-white luxury-text-shadow drop-shadow-2xl flex flex-row items-center justify-center gap-[0.2em] pointer-events-none w-auto"
                   animate={{ 
                     opacity: isFaded ? 0.2 : 1,
                     scale: isHovered ? 1.05 : 1
                   }}
                   transition={{ duration: 0.5, ease: 'easeOut' }}
                 >
-                  {/* Bold Sans-Serif Part */}
                   <motion.span 
                     className="font-sans font-black tracking-tighter text-white"
                     animate={{ letterSpacing: isHovered ? '0.02em' : '-0.02em' }}
@@ -150,10 +139,9 @@ export default function ServiceCards({ isVisible }: ServiceCardsProps) {
                     {displayFirst}
                   </motion.span>
 
-                  {/* Luxurious Italic Serif Part */}
                   {displaySecond && (
                     <motion.span 
-                      className={`font-cormorant font-light italic tracking-wide text-[#FFD700] ${isLeft ? 'ml-12 md:ml-0' : 'mr-12 md:mr-0'}`}
+                      className="font-cormorant font-light italic tracking-wide text-[#FFD700]"
                       animate={{ letterSpacing: isHovered ? '0.1em' : '0.02em' }}
                       transition={{ duration: 0.5 }}
                     >
@@ -162,9 +150,8 @@ export default function ServiceCards({ isVisible }: ServiceCardsProps) {
                   )}
                 </motion.h2>
 
-                {/* Dynamic Description Reveal */}
                 <motion.div 
-                  className="overflow-hidden pointer-events-none mt-4 md:mt-0 relative z-10 hidden md:block"
+                  className="overflow-hidden pointer-events-none relative z-10 block"
                   initial={{ height: 0, opacity: 0 }}
                   animate={{ 
                     height: isHovered ? 'auto' : 0,
@@ -173,10 +160,63 @@ export default function ServiceCards({ isVisible }: ServiceCardsProps) {
                   }}
                   transition={{ duration: 0.4, ease: 'easeOut' }}
                 >
-                  <p className="font-sans text-[10px] md:text-xs tracking-[0.25em] uppercase text-white/80 font-semibold text-center max-w-[80%] mx-auto">
+                  <p className="font-sans text-xs tracking-[0.25em] uppercase text-white/80 font-semibold text-center max-w-[80%] mx-auto">
                     {service.description}
                   </p>
                 </motion.div>
+              </motion.div>
+            </Link>
+          );
+        })}
+      </div>
+
+      {/* 
+        MOBILE SLEEK LIST MENU 
+        Ultra-premium structured vertical list (Hidden on Desktop)
+      */}
+      <div className="relative z-10 w-full flex md:hidden flex-col pointer-events-auto mt-28 px-6 pb-20">
+        <motion.div 
+          className="w-full h-[1px] bg-white/20 mb-2"
+          initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ duration: 1, delay: 0.4 }}
+        />
+        
+        {services.map((service, index) => {
+          const parts = service.title.split(' ');
+          const firstPart = parts[0];
+          const secondPart = parts.slice(1).join(' ') || (service.id === 3 ? 'tography' : '');
+          
+          const displayFirst = service.id === 3 ? 'CINEMA' : firstPart.toUpperCase();
+          const displaySecond = secondPart.toLowerCase();
+
+          return (
+            <Link key={service.id} href={service.href} passHref className="block w-full">
+              <motion.div 
+                className="relative flex items-center justify-between py-8 border-b border-white/10 group"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.5 + index * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <div className="flex items-center gap-6">
+                  <span className="font-sans font-light text-white/30 text-2xl tracking-widest">
+                    0{index + 1}
+                  </span>
+                  
+                  <div className="flex flex-col items-start gap-1">
+                    <span className="font-sans font-black tracking-tighter text-white text-3xl leading-none">
+                      {displayFirst}
+                    </span>
+                    {displaySecond && (
+                      <span className="font-cormorant italic text-[#FFD700] text-3xl leading-none tracking-wide">
+                        {displaySecond}
+                      </span>
+                    )}
+                  </div>
+                </div>
+                
+                <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center bg-white/5 backdrop-blur-sm text-white/50">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </div>
               </motion.div>
             </Link>
           );
