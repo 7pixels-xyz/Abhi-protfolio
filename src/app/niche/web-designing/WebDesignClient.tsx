@@ -1,7 +1,7 @@
 'use client';
 
-import { motion, useScroll, useTransform, useMotionTemplate, useMotionValue } from 'framer-motion';
-import { useRef, MouseEvent } from 'react';
+import { motion, useScroll, useTransform, useMotionTemplate, useMotionValue, AnimatePresence } from 'framer-motion';
+import { useRef, MouseEvent, useState } from 'react';
 import Link from 'next/link';
 import { useTheme } from '@/components/ThemeProvider';
 
@@ -21,11 +21,11 @@ const MetricCard = ({ title, value, sub, desc, delay, isNight }: { title: string
 
   return (
     <motion.div 
-      className={`relative flex flex-col items-center text-center md:items-start md:text-left p-8 md:p-10 rounded-[2rem] border overflow-hidden group transition-colors duration-500 hover:shadow-[0_20px_40px_rgba(0,0,0,0.05)] ${cardBg}`}
+      className={`relative flex flex-col items-center text-center md:items-start md:text-left p-6 md:p-10 rounded-2xl md:rounded-[2rem] border overflow-hidden group transition-colors duration-500 hover:shadow-[0_20px_40px_rgba(0,0,0,0.05)] ${cardBg}`}
       onMouseMove={handleMouseMove}
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-100px" }}
+      viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] }}
     >
       <motion.div
@@ -34,16 +34,77 @@ const MetricCard = ({ title, value, sub, desc, delay, isNight }: { title: string
           background: useMotionTemplate`radial-gradient(400px circle at ${mouseX}px ${mouseY}px, ${isNight ? 'rgba(255, 255, 255, 0.05)' : 'rgba(37, 99, 235, 0.15)'}, transparent 40%)`,
         }}
       />
-      <span className={`relative z-20 font-mono text-[10px] md:text-xs uppercase tracking-[0.2em] mb-6 transition-colors ${mutedText} group-hover:${textColor}`}>{title}</span>
-      <div className={`relative z-20 text-6xl md:text-7xl font-sans font-black tracking-tighter mb-4 transition-colors ${textColor}`}>{value}<span className={`text-3xl font-light ${mutedText}`}>{sub}</span></div>
-      <p className={`relative z-20 text-xs md:text-sm font-light leading-relaxed transition-colors ${mutedText}`}>{desc}</p>
+      <span className={`relative z-20 font-mono text-[9px] md:text-xs uppercase tracking-[0.2em] mb-2 md:mb-6 transition-colors ${mutedText} group-hover:${textColor}`}>{title}</span>
+      <div className={`relative z-20 text-4xl md:text-7xl font-sans font-black tracking-tighter mb-2 md:mb-4 transition-colors ${textColor}`}>{value}<span className={`text-xl md:text-3xl font-light ${mutedText}`}>{sub}</span></div>
+      <p className={`relative z-20 text-[10px] md:text-sm font-light leading-relaxed transition-colors ${mutedText}`}>{desc}</p>
     </motion.div>
   );
 };
 
+const PortfolioModal = ({ activeWing, onClose, isNight }: { activeWing: string, onClose: () => void, isNight: boolean }) => {
+  const portfolioData: Record<string, { title: string, websites: string[] }> = {
+    'Interior Design': {
+      title: 'Interior Design Architecture',
+      websites: ['https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&q=80', 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&q=80', 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&q=80']
+    },
+    'Clinical & Dental': {
+      title: 'Clinical & Dental Interfaces',
+      websites: ['https://images.unsplash.com/photo-1555529733-0e670560f7e1?auto=format&fit=crop&q=80', 'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?auto=format&fit=crop&q=80', 'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&q=80']
+    },
+    'Tattoo Artists': {
+      title: 'Tattoo Artists Galleries',
+      websites: ['https://images.unsplash.com/photo-1598371839696-5c5bb00bdc28?auto=format&fit=crop&q=80', 'https://images.unsplash.com/photo-1560707854-bebc1cb6d22d?auto=format&fit=crop&q=80', 'https://images.unsplash.com/photo-1598371691232-a5e2fce12d21?auto=format&fit=crop&q=80']
+    },
+    'Digital Creators': {
+      title: 'Digital Creators Platforms',
+      websites: ['https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&q=80', 'https://images.unsplash.com/photo-1516259762381-22954d7d3ad2?auto=format&fit=crop&q=80', 'https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&q=80']
+    },
+    'SaaS & Tech': {
+      title: 'SaaS & Tech Systems',
+      websites: ['https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80', 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80', 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80']
+    }
+  };
+
+  const data = portfolioData[activeWing];
+  if (!data) return null;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 50 }}
+      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+      className={`fixed inset-0 z-[100] flex flex-col items-center justify-start pt-24 px-4 overflow-y-auto backdrop-blur-3xl ${isNight ? 'bg-[#1c2226]/95' : 'bg-[#fcfbfa]/95'}`}
+    >
+       <button onClick={onClose} className={`absolute top-6 right-6 md:top-8 md:right-8 p-3 md:p-4 rounded-full ${isNight ? 'bg-white/10 text-white hover:bg-white/20' : 'bg-black/10 text-black hover:bg-black/20'} transition-all hover:rotate-90`}>
+         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+       </button>
+       
+       <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className={`font-mono text-xs uppercase tracking-[0.3em] mb-4 ${isNight ? 'text-white/50' : 'text-black/50'}`}>Live Archive</motion.span>
+       <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className={`font-cormorant italic text-4xl md:text-6xl lg:text-7xl mb-12 md:mb-20 text-center ${isNight ? 'text-white' : 'text-[#1b3f55]'}`}>{data.title}</motion.h2>
+       
+       <div className="w-full max-w-7xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 pb-32">
+          {data.websites.map((url, i) => (
+             <motion.div 
+               key={i} 
+               initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 + i * 0.1, duration: 0.6 }}
+               className={`w-full aspect-[4/3] rounded-2xl md:rounded-[2rem] overflow-hidden border ${isNight ? 'border-white/10' : 'border-black/10'} group relative cursor-pointer shadow-2xl`}
+             >
+                <div className="absolute inset-0 bg-cover bg-center transition-transform duration-[1.5s] group-hover:scale-110" style={{ backgroundImage: `url(${url})` }} />
+                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
+                   <span className="text-white font-mono uppercase tracking-widest text-[10px] md:text-xs border border-white/30 px-6 py-2 rounded-full backdrop-blur-md bg-white/10 group-hover:scale-105 transition-transform">Visit Interface</span>
+                </div>
+             </motion.div>
+          ))}
+       </div>
+    </motion.div>
+  );
+}
+
 export default function WebDesignClient() {
   const { theme } = useTheme();
   const isNight = theme === 'night';
+  const [activeWing, setActiveWing] = useState<string | null>(null);
 
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start start", "end end"] });
@@ -116,22 +177,8 @@ export default function WebDesignClient() {
         </motion.div>
       </section>
 
-      {/* 2. ENGINEERED METRICS */}
+      {/* 2. THE MUSEUM LIBRARY (PORTFOLIO BENTO) */}
       <section className="relative z-10 w-full px-4 md:px-12 lg:px-24 py-16 md:py-32 mt-10 md:mt-20">
-         <motion.div 
-           className={`w-full h-[1px] bg-gradient-to-r from-transparent ${isNight ? 'via-white/20' : 'via-black/10'} to-transparent mb-16 md:mb-24`}
-           initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }} viewport={{ once: true }} transition={{ duration: 1.5, ease: "easeInOut" }}
-         />
-         
-         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-            <MetricCard title="Google Lighthouse" value="100" sub="/100" desc="Perfect score across performance, accessibility, SEO, and best practices." delay={0.1} isNight={isNight} />
-            <MetricCard title="Average Load" value="0.8" sub="s" desc="Lightning-fast DOM rendering explicitly optimized for premium experiences." delay={0.2} isNight={isNight} />
-            <MetricCard title="System Integrity" value="99.9" sub="%" desc="Bulletproof hosting pipelines securely distributed across global edge networks." delay={0.3} isNight={isNight} />
-         </div>
-      </section>
-
-      {/* 3. THE MUSEUM LIBRARY (PORTFOLIO BENTO) */}
-      <section className="relative z-10 w-full px-4 md:px-12 lg:px-24 py-16 md:py-32">
          <motion.div 
            className="flex flex-col md:flex-row items-start md:items-end justify-between mb-12 md:mb-20 gap-6 md:gap-8"
            initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 1 }}
@@ -149,6 +196,7 @@ export default function WebDesignClient() {
             
             {/* Wing 01 */}
             <motion.div 
+               onClick={() => setActiveWing('Interior Design')}
                className={`h-[300px] md:h-auto md:col-span-2 md:row-span-1 rounded-[2rem] bg-gradient-to-br ${isNight ? 'from-white/[0.05]' : 'from-black/[0.03]'} to-transparent border ${borderColor} p-6 md:p-10 flex flex-col justify-between overflow-hidden group relative cursor-pointer`}
                whileHover={{ y: -5, transition: { duration: 0.3 } }}
                initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true, margin: "-50px" }} transition={{ duration: 0.8, delay: 0.1 }}
@@ -171,6 +219,7 @@ export default function WebDesignClient() {
 
             {/* Wing 02 */}
             <motion.div 
+               onClick={() => setActiveWing('Clinical & Dental')}
                className={`h-[350px] md:h-auto md:col-span-1 md:row-span-2 rounded-[2rem] ${isNight ? 'bg-[#f4ece3]/5 border-[#f4ece3]/20' : 'bg-[#2563EB]/5 border-[#2563EB]/20'} p-6 md:p-10 flex flex-col justify-between overflow-hidden group relative cursor-pointer`}
                whileHover={{ y: -5, transition: { duration: 0.3 } }}
                initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true, margin: "-50px" }} transition={{ duration: 0.8, delay: 0.2 }}
@@ -190,6 +239,7 @@ export default function WebDesignClient() {
 
             {/* Wing 03 */}
             <motion.div 
+               onClick={() => setActiveWing('Tattoo Artists')}
                className={`h-[250px] md:h-auto md:col-span-1 md:row-span-1 rounded-[2rem] ${isNight ? 'bg-white/5 border-white/5 hover:border-white/20' : 'bg-black/[0.02] border-black/5 hover:border-black/10'} p-6 md:p-8 flex flex-col justify-between overflow-hidden group relative cursor-pointer transition-colors`}
                whileHover={{ y: -5, transition: { duration: 0.3 } }}
                initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true, margin: "-50px" }} transition={{ duration: 0.8, delay: 0.3 }}
@@ -206,6 +256,7 @@ export default function WebDesignClient() {
 
             {/* Wing 04 */}
             <motion.div 
+               onClick={() => setActiveWing('Digital Creators')}
                className={`h-[250px] md:h-auto md:col-span-1 md:row-span-1 rounded-[2rem] ${isNight ? 'bg-white/5 border-white/5 hover:border-white/20' : 'bg-black/[0.02] border-black/5 hover:border-black/10'} p-6 md:p-8 flex flex-col justify-between overflow-hidden group relative cursor-pointer transition-colors`}
                whileHover={{ y: -5, transition: { duration: 0.3 } }}
                initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true, margin: "-50px" }} transition={{ duration: 0.8, delay: 0.4 }}
@@ -222,6 +273,7 @@ export default function WebDesignClient() {
 
             {/* Wing 05 */}
             <motion.div 
+               onClick={() => setActiveWing('SaaS & Tech')}
                className={`h-[300px] md:h-auto md:col-span-2 md:row-span-1 rounded-[2rem] bg-gradient-to-r ${isNight ? 'from-white/[0.05] hover:from-white/10' : 'from-black/[0.03] hover:from-black/[0.05]'} to-transparent border ${borderColor} p-6 md:p-10 flex items-center justify-between overflow-hidden group relative cursor-pointer transition-colors`}
                whileHover={{ y: -5, transition: { duration: 0.3 } }}
                initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true, margin: "-50px" }} transition={{ duration: 0.8, delay: 0.5 }}
@@ -241,6 +293,26 @@ export default function WebDesignClient() {
             </motion.div>
          </div>
       </section>
+
+      {/* 3. ENGINEERED METRICS (Moved to bottom and optimized for mobile) */}
+      <section className="relative z-10 w-full px-4 md:px-12 lg:px-24 py-8 md:py-32">
+         <motion.div 
+           className={`w-full h-[1px] bg-gradient-to-r from-transparent ${isNight ? 'via-white/20' : 'via-black/10'} to-transparent mb-12 md:mb-24`}
+           initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }} viewport={{ once: true }} transition={{ duration: 1.5, ease: "easeInOut" }}
+         />
+         
+         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-8">
+            <MetricCard title="Google Lighthouse" value="100" sub="/100" desc="Perfect score across performance, accessibility, SEO, and best practices." delay={0.1} isNight={isNight} />
+            <MetricCard title="Average Load" value="0.8" sub="s" desc="Lightning-fast DOM rendering explicitly optimized for premium experiences." delay={0.2} isNight={isNight} />
+            <MetricCard title="System Integrity" value="99.9" sub="%" desc="Bulletproof hosting pipelines securely distributed across global edge networks." delay={0.3} isNight={isNight} />
+         </div>
+      </section>
+
+      <AnimatePresence>
+        {activeWing && (
+          <PortfolioModal activeWing={activeWing} onClose={() => setActiveWing(null)} isNight={isNight} />
+        )}
+      </AnimatePresence>
 
     </motion.main>
   );
