@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Inter, Playfair_Display, Cormorant_Garamond, Bodoni_Moda } from 'next/font/google';
 import './globals.css';
 import CustomCursor from '@/components/CustomCursor';
@@ -15,6 +15,13 @@ const bodoni = Bodoni_Moda({ subsets: ['latin'], variable: '--font-bodoni', styl
 export const metadata: Metadata = {
   title: 'Abhi - Jack of all trades',
   description: 'Premium Luxury Portfolio',
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 };
 
 export default function RootLayout({

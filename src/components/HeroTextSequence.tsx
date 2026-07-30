@@ -83,11 +83,11 @@ export default function HeroTextSequence() {
       scale: 1,
     },
     topLeft: {
-      top: isMobile ? "25%" : "8%",
-      left: isMobile ? "50%" : "4%",
-      x: isMobile ? "-50%" : "0%",
+      top: isMobile ? "12%" : "8%",
+      left: "4%",
+      x: "0%",
       y: "0%",
-      scale: isMobile ? 0.7 : 0.3, // Centered and premium on mobile
+      scale: isMobile ? 0.4 : 0.3, // Subtle logo look
     }
   };
 
