@@ -101,7 +101,7 @@ export default function ServiceCards({ isVisible }: ServiceCardsProps) {
         EDITORIAL MENU LIST 
         Massive typography that reacts to hover
       */}
-      <div className="relative z-10 w-full flex flex-col items-center justify-center gap-2 mt-20 pointer-events-auto">
+      <div className="relative z-10 w-full flex flex-col md:items-center md:justify-center gap-12 md:gap-2 mt-16 md:mt-20 pointer-events-auto overflow-hidden px-4 md:px-0">
         {services.map((service, index) => {
           const isHovered = activeService === service.id;
           const isFaded = activeService !== null && activeService !== service.id;
@@ -114,19 +114,27 @@ export default function ServiceCards({ isVisible }: ServiceCardsProps) {
           const displayFirst = service.id === 3 ? 'CINEMA' : firstPart.toUpperCase();
           const displaySecond = secondPart.toLowerCase();
 
+          // Alternating alignment for mobile
+          const isLeft = index % 2 === 0;
+
           return (
-            <Link key={service.id} href={service.href} passHref className="block w-fit mx-auto">
+            <Link key={service.id} href={service.href} passHref className="block w-full md:w-fit md:mx-auto">
               <motion.div 
-                className="relative cursor-pointer flex flex-col items-center py-4 md:py-6 group pointer-events-auto"
+                className={`relative cursor-pointer flex flex-col py-2 md:py-6 group pointer-events-auto w-full md:items-center ${isLeft ? 'items-start text-left' : 'items-end text-right'}`}
                 onHoverStart={() => setActiveService(service.id)}
                 onHoverEnd={() => setActiveService(null)}
                 initial={{ y: 50, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.8, delay: 0.5 + index * 0.1, ease: [0.16, 1, 0.3, 1] }}
               >
+                {/* Mobile Background Index Number */}
+                <div className={`md:hidden absolute top-1/2 -translate-y-1/2 ${isLeft ? 'right-0' : 'left-0'} text-white/[0.03] font-sans font-black text-[8rem] tracking-tighter leading-none pointer-events-none z-0`}>
+                  0{index + 1}
+                </div>
+
                 {/* Massive Dual-Font Title */}
                 <motion.h2 
-                  className="text-5xl sm:text-6xl md:text-7xl lg:text-[7vw] text-white whitespace-nowrap luxury-text-shadow drop-shadow-2xl flex items-center justify-center gap-[0.2em] pointer-events-none"
+                  className="relative z-10 text-[3.8rem] leading-[0.85] sm:text-6xl md:text-7xl lg:text-[7vw] md:leading-normal text-white luxury-text-shadow drop-shadow-2xl flex flex-col md:flex-row md:items-center md:justify-center gap-0 md:gap-[0.2em] pointer-events-none w-full md:w-auto"
                   animate={{ 
                     opacity: isFaded ? 0.2 : 1,
                     scale: isHovered ? 1.05 : 1
@@ -135,7 +143,7 @@ export default function ServiceCards({ isVisible }: ServiceCardsProps) {
                 >
                   {/* Bold Sans-Serif Part */}
                   <motion.span 
-                    className="font-sans font-bold tracking-tighter text-white"
+                    className="font-sans font-black tracking-tighter text-white"
                     animate={{ letterSpacing: isHovered ? '0.02em' : '-0.02em' }}
                     transition={{ duration: 0.5 }}
                   >
@@ -145,7 +153,7 @@ export default function ServiceCards({ isVisible }: ServiceCardsProps) {
                   {/* Luxurious Italic Serif Part */}
                   {displaySecond && (
                     <motion.span 
-                      className="font-cormorant font-light italic tracking-wide text-[#FFD700]"
+                      className={`font-cormorant font-light italic tracking-wide text-[#FFD700] ${isLeft ? 'ml-12 md:ml-0' : 'mr-12 md:mr-0'}`}
                       animate={{ letterSpacing: isHovered ? '0.1em' : '0.02em' }}
                       transition={{ duration: 0.5 }}
                     >
@@ -156,7 +164,7 @@ export default function ServiceCards({ isVisible }: ServiceCardsProps) {
 
                 {/* Dynamic Description Reveal */}
                 <motion.div 
-                  className="overflow-hidden pointer-events-none"
+                  className="overflow-hidden pointer-events-none mt-4 md:mt-0 relative z-10 hidden md:block"
                   initial={{ height: 0, opacity: 0 }}
                   animate={{ 
                     height: isHovered ? 'auto' : 0,
