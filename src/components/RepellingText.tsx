@@ -42,7 +42,7 @@ export default function RepellingText({
   return (
     <motion.div
       ref={containerRef}
-      className={`flex flex-col md:flex-row flex-wrap justify-center gap-[1.5ch] ${className}`}
+      className={`flex flex-row flex-nowrap justify-center gap-[1.5ch] ${className}`}
       initial={{ opacity: 0, y: 50, filter: 'blur(10px)' }}
       animate={{ 
         opacity: isVisible ? 1 : 0, 
@@ -57,9 +57,9 @@ export default function RepellingText({
         
         // Calculate the push offset for each word. Word 0 ("This") stays at 0.
         // Word 1 ("is") moves left. Word 2 ("Abhi") moves further left.
-        // On mobile, we push UP (y axis). On desktop, we push LEFT (x axis).
-        // Reduced mobile compression from 0.8 to 0.2 to prevent words overlapping.
-        const pushOffset = isPushed ? -(wIdx * (isMobile ? 0.2 : 1.5)) : 0; 
+        // We push strictly LEFT (x axis) for both desktop and mobile.
+        // Mobile needs a slightly higher vw multiplier because viewport is narrower.
+        const pushOffset = isPushed ? -(wIdx * (isMobile ? 6 : 3)) : 0; 
 
         return (
           <motion.div 
@@ -67,7 +67,7 @@ export default function RepellingText({
             className={`flex ${isHighlighted ? 'font-bodoni italic' : ''}`} 
             style={{ color: isHighlighted ? highlightColor : undefined }}
             initial={{ x: 0, y: 0 }}
-            animate={isMobile ? { y: `${pushOffset}em`, x: 0 } : { x: `${pushOffset}em`, y: 0 }}
+            animate={{ x: `${pushOffset}vw`, y: 0 }}
             transition={{ type: 'spring', stiffness: 200, damping: 15 }}
           >
             {word.split('').map((char, cIdx) => (

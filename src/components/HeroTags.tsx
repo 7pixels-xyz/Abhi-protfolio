@@ -4,13 +4,17 @@ import { motion } from 'framer-motion';
 import { useRef } from 'react';
 
 const tags = [
-  { id: 1, text: 'Designer', initialX: '15%', initialY: '35%', rotate: -3, cursorText: 'obsessed with aesthetics' },
-  { id: 2, text: 'Creative', initialX: '78%', initialY: '18%', rotate: 5, cursorText: 'out of the box thinking' },
-  { id: 3, text: 'Builder', initialX: '65%', initialY: '75%', rotate: -2, cursorText: 'from scratch, always' },
-  { id: 4, text: 'Developer', initialX: '20%', initialY: '85%', rotate: 4, cursorText: 'i speak computer' },
-  { id: 5, text: 'Web Designer', initialX: '45%', initialY: '25%', rotate: -4, cursorText: 'pixel perfect execution' },
-  { id: 6, text: 'Copywriter', initialX: '8%', initialY: '70%', rotate: 6, cursorText: 'words that sell' },
-  { id: 7, text: 'Cinematographer', initialX: '55%', initialY: '88%', rotate: -3, cursorText: 'painting with light' },
+  // Top-Left Cluster
+  { id: 1, text: 'Designer', initialX: '12%', initialY: '18%', rotate: -3, cursorText: 'obsessed with aesthetics' },
+  { id: 6, text: 'Copywriter', initialX: '8%', initialY: '30%', rotate: 6, cursorText: 'words that sell' },
+  // Top-Right Cluster
+  { id: 2, text: 'Creative', initialX: '75%', initialY: '15%', rotate: 5, cursorText: 'out of the box thinking' },
+  { id: 5, text: 'Web Designer', initialX: '60%', initialY: '8%', rotate: -4, cursorText: 'pixel perfect execution' },
+  // Bottom-Left Cluster
+  { id: 4, text: 'Developer', initialX: '15%', initialY: '85%', rotate: 4, cursorText: 'i speak computer' },
+  // Bottom-Right Cluster
+  { id: 3, text: 'Builder', initialX: '80%', initialY: '75%', rotate: -2, cursorText: 'from scratch, always' },
+  { id: 7, text: 'Cinematographer', initialX: '60%', initialY: '88%', rotate: -3, cursorText: 'painting with light' },
 ];
 
 export default function HeroTags() {

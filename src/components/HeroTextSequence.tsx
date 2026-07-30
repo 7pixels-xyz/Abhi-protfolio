@@ -126,25 +126,24 @@ export default function HeroTextSequence() {
                 highlightWord="Abhi"
                 isPushed={showImage}
                 isMobile={isMobile}
-                className="text-5xl sm:text-6xl md:text-8xl lg:text-[9vw] font-playfair font-medium text-white tracking-tight luxury-text-shadow drop-shadow-2xl whitespace-nowrap"
+                className="text-6xl sm:text-7xl md:text-8xl lg:text-[9vw] font-playfair font-bold md:font-medium text-white tracking-tight luxury-text-shadow drop-shadow-2xl whitespace-nowrap"
               />
             </motion.div>
 
             <AnimatePresence>
               {showImage && activeStep === 0 && (
                 <motion.div
-                  initial={{ opacity: 0, x: isMobile ? 0 : '40vw', y: isMobile ? '40vh' : 0, rotate: 90 }}
+                  initial={{ opacity: 0, x: '40vw', rotate: 90 }}
                   animate={{ 
                     opacity: 1, 
-                    x: isMobile ? 0 : (showImage ? '-10vw' : 0), 
-                    y: isMobile ? (showImage ? '-5vh' : 0) : 0, 
+                    x: showImage ? (isMobile ? '-15vw' : '-6vw') : 0, 
                     rotate: 0 
                   }}
                   exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.3 } }}
                   transition={{ type: 'spring', stiffness: 200, damping: 15 }} // Changed to spring so it bounces when it hits and pushes
                   onAnimationComplete={() => setImageLanded(true)} // Triggers the compression push
 
-                  className={`absolute ${isMobile ? '-bottom-[120px] left-1/2 -translate-x-1/2' : 'top-1/2 -translate-y-1/2 -right-[220px]'} w-[80px] h-[80px] md:w-[180px] md:h-[180px] rounded-full overflow-hidden border-[4px] border-white/90 shadow-[0_30px_60px_rgba(0,0,0,0.4)] flex-shrink-0 pointer-events-auto cursor-none z-40`}
+                  className="absolute top-1/2 -translate-y-1/2 -right-[120px] md:-right-[220px] w-[80px] h-[80px] md:w-[180px] md:h-[180px] rounded-full overflow-hidden border-[4px] border-white/90 shadow-[0_30px_60px_rgba(0,0,0,0.4)] flex-shrink-0 pointer-events-auto cursor-none z-40"
                   data-cursor-type="drag"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
