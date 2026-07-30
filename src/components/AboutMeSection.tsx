@@ -42,11 +42,11 @@ export default function AboutMeSection() {
     >
       {/* Subtle Glowing Accents */}
       <motion.div 
-        className={`absolute top-0 right-0 w-[50vw] h-[50vw] rounded-full blur-[150px] ${orbOpacity1} pointer-events-none transition-all duration-700`}
+        className={`absolute top-0 right-[-50%] md:right-0 w-[150vw] h-[150vw] md:w-[50vw] md:h-[50vw] rounded-full blur-[80px] md:blur-[150px] ${orbOpacity1} pointer-events-none transition-all duration-700`}
         style={{ background: `radial-gradient(circle, ${orb1Color}, transparent)` }}
       />
       <motion.div 
-        className={`absolute bottom-0 left-0 w-[40vw] h-[40vw] rounded-full blur-[120px] ${orbOpacity2} pointer-events-none transition-all duration-700`}
+        className={`absolute bottom-0 left-[-50%] md:left-0 w-[150vw] h-[150vw] md:w-[40vw] md:h-[40vw] rounded-full blur-[80px] md:blur-[120px] ${orbOpacity2} pointer-events-none transition-all duration-700`}
         style={{ background: `radial-gradient(circle, ${orb2Color}, transparent)` }}
       />
 
