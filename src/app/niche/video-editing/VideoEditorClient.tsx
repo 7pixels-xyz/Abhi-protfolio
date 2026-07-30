@@ -132,15 +132,27 @@ const VideoModal = ({ videoUrl, onClose }: { videoUrl: string | null, onClose: (
   );
 };
 
-const ShortsVideoCard = ({ videoUrl, isCenter }: { videoUrl: string, isCenter: boolean }) => {
+const ShortsVideoCard = ({ videoUrl }: { videoUrl: string }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isHovered, setIsHovered] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(false);
 
   const thumbnailUrl = videoUrl.replace('.mp4', '.jpg');
   
-  // Play if center on mobile or hovered on desktop
-  const shouldPlay = isCenter || isHovered;
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsAutoPlaying(entry.isIntersecting);
+      },
+      { threshold: 0.6 }
+    );
+    if (containerRef.current) observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  const shouldPlay = isAutoPlaying || isHovered;
 
   useEffect(() => {
     if (shouldPlay && videoRef.current) {
@@ -152,6 +164,7 @@ const ShortsVideoCard = ({ videoUrl, isCenter }: { videoUrl: string, isCenter: b
 
   return (
     <div 
+      ref={containerRef}
       className="relative w-full h-full bg-[#050505] group"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -163,7 +176,7 @@ const ShortsVideoCard = ({ videoUrl, isCenter }: { videoUrl: string, isCenter: b
         alt="Thumbnail" 
         className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 
           ${shouldPlay ? 'opacity-0 scale-110' : 'opacity-100 scale-100'} 
-          ${isCenter ? 'grayscale-0 brightness-100' : 'grayscale brightness-50 group-hover:grayscale-0'}`} 
+          ${shouldPlay ? 'grayscale-0 brightness-100' : 'grayscale brightness-50 group-hover:grayscale-0'}`} 
       />
       <video 
         ref={videoRef}
@@ -176,18 +189,19 @@ const ShortsVideoCard = ({ videoUrl, isCenter }: { videoUrl: string, isCenter: b
           ${shouldPlay ? 'opacity-100 scale-105' : 'opacity-0 scale-100'}`}
       />
 
-      <button 
-        onClick={(e) => { 
-          e.stopPropagation(); 
-          setIsMuted(!isMuted); 
-        }}
-        className={`absolute bottom-6 right-6 w-12 h-12 rounded-full bg-black/60 backdrop-blur-xl border border-white/20 flex items-center justify-center text-white z-20 transition-all duration-500 hover:scale-110 hover:bg-white/10
-          ${shouldPlay ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 translate-y-4 pointer-events-none'}`}
-      >
-        {isMuted ? <VolumeOffIcon /> : <VolumeOnIcon />}
-      </button>
+      {shouldPlay && (
+        <button 
+          onClick={(e) => { 
+            e.stopPropagation(); 
+            setIsMuted(!isMuted); 
+          }}
+          className="absolute bottom-6 right-6 w-12 h-12 rounded-full bg-black/60 backdrop-blur-xl border border-white/20 flex items-center justify-center text-white z-20 transition-all duration-500 hover:scale-110 hover:bg-white/10"
+        >
+          {isMuted ? <VolumeOffIcon /> : <VolumeOnIcon />}
+        </button>
+      )}
 
-      <div className={`absolute inset-0 z-20 flex items-center justify-center pointer-events-none transition-opacity duration-500 ${isCenter && !isHovered ? 'opacity-100' : 'opacity-0'}`}>
+      <div className={`absolute inset-0 z-20 flex items-center justify-center pointer-events-none transition-opacity duration-500 ${shouldPlay && !isHovered ? 'opacity-100' : 'opacity-0'}`}>
          <div className="w-16 h-16 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shadow-[0_0_30px_rgba(0,0,0,0.5)]">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="ml-1 translate-x-[1px]"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
          </div>
@@ -197,91 +211,49 @@ const ShortsVideoCard = ({ videoUrl, isCenter }: { videoUrl: string, isCenter: b
 };
 
 const ShortsCarousel = ({ videos, onPlay }: { videos: string[], onPlay: (url: string) => void }) => {
-  const [activeIndex, setActiveIndex] = useState(Math.floor(videos.length / 2));
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  const handleNext = () => {
-    setActiveIndex((prev) => Math.min(videos.length - 1, prev + 1));
-    if (typeof navigator !== 'undefined' && navigator.vibrate) navigator.vibrate(50);
-  };
-  const handlePrev = () => {
-    setActiveIndex((prev) => Math.max(0, prev - 1));
-    if (typeof navigator !== 'undefined' && navigator.vibrate) navigator.vibrate(50);
+  const scrollLeft = () => {
+    if (containerRef.current) {
+      containerRef.current.scrollBy({ left: -320, behavior: 'smooth' });
+    }
   };
 
-  const handleDragEnd = (e: any, { offset, velocity }: any) => {
-    const swipe = offset.x;
-    if (swipe < -30 || velocity.x < -200) {
-      handleNext();
-    } else if (swipe > 30 || velocity.x > 200) {
-      handlePrev();
+  const scrollRight = () => {
+    if (containerRef.current) {
+      containerRef.current.scrollBy({ left: 320, behavior: 'smooth' });
     }
   };
 
   return (
-    <div className="relative w-full h-[600px] md:h-[700px] flex items-center justify-center perspective-[1500px] mt-10 md:mt-0">
-      <motion.div 
-        className="absolute inset-0 z-40 touch-pan-y" 
-        drag="x" 
-        dragConstraints={{ left: 0, right: 0 }} 
-        dragElastic={0.2}
-        onDragEnd={handleDragEnd} 
-      />
-      {videos.map((url, i) => {
-        const offset = i - activeIndex;
-        const absOffset = Math.abs(offset);
-        const isCenter = offset === 0;
-
-        let x = 0;
-        let rotateY = 0;
-        let scale = 1;
-        let zIndex = 50 - absOffset;
-        let opacity = 1;
-        let blur = 0;
-
-        if (offset < 0) {
-          x = typeof window !== 'undefined' && window.innerWidth < 768 ? -70 * absOffset : -140 * absOffset;
-          rotateY = 25;
-          scale = Math.max(0.6, 1 - absOffset * 0.15);
-          opacity = Math.max(0, 1 - absOffset * 0.4);
-          blur = absOffset * 3;
-        } else if (offset > 0) {
-          x = typeof window !== 'undefined' && window.innerWidth < 768 ? 70 * absOffset : 140 * absOffset;
-          rotateY = -25;
-          scale = Math.max(0.6, 1 - absOffset * 0.15);
-          opacity = Math.max(0, 1 - absOffset * 0.4);
-          blur = absOffset * 3;
-        }
-
-        return (
-          <motion.div
+    <div className="relative w-full mt-4 md:mt-0">
+      <div 
+        ref={containerRef}
+        className="flex gap-6 w-full overflow-x-auto snap-x snap-mandatory no-scrollbar pb-16 pt-4 px-6 md:px-0" 
+        style={{ scrollBehavior: 'smooth' }}
+      >
+        {videos.map((url, i) => (
+          <div 
             key={url}
-            className="absolute top-0 w-[280px] md:w-[320px] aspect-[9/16] rounded-[2rem] overflow-hidden cursor-pointer shadow-[0_30px_60px_rgba(0,0,0,0.8)] border border-white/10"
-            style={{ zIndex, filter: `blur(${blur}px)` }}
-            animate={{ x, rotateY, scale, opacity }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            onClick={() => {
-              if (isCenter) onPlay(url);
-              else setActiveIndex(i);
-            }}
+            className="min-w-[80%] md:min-w-[320px] aspect-[9/16] rounded-[2rem] overflow-hidden snap-center shrink-0 shadow-[0_20px_40px_rgba(0,0,0,0.6)] border border-white/10 cursor-pointer"
+            onClick={() => onPlay(url)}
           >
-            <ShortsVideoCard videoUrl={url} isCenter={isCenter} />
-          </motion.div>
-        );
-      })}
+            <ShortsVideoCard videoUrl={url} />
+          </div>
+        ))}
+      </div>
 
       {/* Controls */}
-      <div className="absolute -bottom-10 md:-bottom-24 flex items-center gap-6 z-50">
+      <div className="absolute bottom-2 md:-bottom-8 left-0 right-0 flex items-center justify-center gap-6 z-50 pointer-events-none">
         <button 
-          onClick={handlePrev} 
-          disabled={activeIndex === 0}
-          className={`w-12 h-12 rounded-full border border-white/20 flex items-center justify-center transition-colors backdrop-blur-md bg-white/5 ${activeIndex === 0 ? 'opacity-30 cursor-not-allowed' : 'hover:bg-white/10 hover:border-white/40'}`}
+          onClick={scrollLeft} 
+          className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center transition-colors backdrop-blur-md bg-white/5 hover:bg-white/10 hover:border-white/40 pointer-events-auto"
         >
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
         </button>
         <button 
-          onClick={handleNext} 
-          disabled={activeIndex === videos.length - 1}
-          className={`w-12 h-12 rounded-full border border-white/20 flex items-center justify-center transition-colors backdrop-blur-md bg-white/5 ${activeIndex === videos.length - 1 ? 'opacity-30 cursor-not-allowed' : 'hover:bg-white/10 hover:border-white/40'}`}
+          onClick={scrollRight} 
+          className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center transition-colors backdrop-blur-md bg-white/5 hover:bg-white/10 hover:border-white/40 pointer-events-auto"
         >
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6"/></svg>
         </button>
