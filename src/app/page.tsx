@@ -3,6 +3,7 @@
 import CloudBackground from '@/components/CloudBackground';
 import HeroTags from '@/components/HeroTags';
 import HeroTextSequence from '@/components/HeroTextSequence';
+import AboutMeSection from '@/components/AboutMeSection';
 import { motion, useScroll, useTransform } from 'framer-motion';
 
 export default function Home() {
@@ -51,6 +52,8 @@ export default function Home() {
           <HeroTags />
         </div>
       </div>
+
+      <AboutMeSection />
 
     </main>
   );
