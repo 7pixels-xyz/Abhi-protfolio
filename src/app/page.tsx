@@ -6,7 +6,6 @@ import HeroTextSequence from '@/components/HeroTextSequence';
 import Manifesto from '@/components/Manifesto';
 import Archive from '@/components/Archive';
 import Anatomy from '@/components/Anatomy';
-import CallSheet from '@/components/CallSheet';
 import { motion, useScroll, useTransform } from 'framer-motion';
 
 export default function Home() {
@@ -64,9 +63,6 @@ export default function Home() {
 
       {/* Act IV: Anatomy of a Frame (Interactive Slider) */}
       <Anatomy />
-
-      {/* Act V: The Call Sheet (Footer CTA) */}
-      <CallSheet />
 
     </main>
   );

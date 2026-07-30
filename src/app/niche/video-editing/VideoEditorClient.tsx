@@ -138,14 +138,17 @@ const ShortsVideoCard = ({ videoUrl, isCenter }: { videoUrl: string, isCenter: b
   const [isMuted, setIsMuted] = useState(true);
 
   const thumbnailUrl = videoUrl.replace('.mp4', '.jpg');
+  
+  // Play if center on mobile or hovered on desktop
+  const shouldPlay = isCenter || isHovered;
 
   useEffect(() => {
-    if (isHovered && videoRef.current) {
+    if (shouldPlay && videoRef.current) {
       videoRef.current.play().catch(() => {});
-    } else if (!isHovered && videoRef.current) {
+    } else if (!shouldPlay && videoRef.current) {
       videoRef.current.pause();
     }
-  }, [isHovered]);
+  }, [shouldPlay]);
 
   return (
     <div 
@@ -159,7 +162,7 @@ const ShortsVideoCard = ({ videoUrl, isCenter }: { videoUrl: string, isCenter: b
         src={thumbnailUrl} 
         alt="Thumbnail" 
         className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 
-          ${isHovered ? 'opacity-0 scale-110' : 'opacity-100 scale-100'} 
+          ${shouldPlay ? 'opacity-0 scale-110' : 'opacity-100 scale-100'} 
           ${isCenter ? 'grayscale-0 brightness-100' : 'grayscale brightness-50 group-hover:grayscale-0'}`} 
       />
       <video 
@@ -170,7 +173,7 @@ const ShortsVideoCard = ({ videoUrl, isCenter }: { videoUrl: string, isCenter: b
         loop
         playsInline
         className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 
-          ${isHovered ? 'opacity-100 scale-105' : 'opacity-0 scale-100'}`}
+          ${shouldPlay ? 'opacity-100 scale-105' : 'opacity-0 scale-100'}`}
       />
 
       <button 
@@ -179,7 +182,7 @@ const ShortsVideoCard = ({ videoUrl, isCenter }: { videoUrl: string, isCenter: b
           setIsMuted(!isMuted); 
         }}
         className={`absolute bottom-6 right-6 w-12 h-12 rounded-full bg-black/60 backdrop-blur-xl border border-white/20 flex items-center justify-center text-white z-20 transition-all duration-500 hover:scale-110 hover:bg-white/10
-          ${isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}
+          ${shouldPlay ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 translate-y-4 pointer-events-none'}`}
       >
         {isMuted ? <VolumeOffIcon /> : <VolumeOnIcon />}
       </button>
@@ -207,9 +210,9 @@ const ShortsCarousel = ({ videos, onPlay }: { videos: string[], onPlay: (url: st
 
   const handleDragEnd = (e: any, { offset, velocity }: any) => {
     const swipe = offset.x;
-    if (swipe < -50) {
+    if (swipe < -30 || velocity.x < -200) {
       handleNext();
-    } else if (swipe > 50) {
+    } else if (swipe > 30 || velocity.x > 200) {
       handlePrev();
     }
   };
@@ -220,6 +223,7 @@ const ShortsCarousel = ({ videos, onPlay }: { videos: string[], onPlay: (url: st
         className="absolute inset-0 z-40 touch-pan-y" 
         drag="x" 
         dragConstraints={{ left: 0, right: 0 }} 
+        dragElastic={0.2}
         onDragEnd={handleDragEnd} 
       />
       {videos.map((url, i) => {
@@ -266,7 +270,7 @@ const ShortsCarousel = ({ videos, onPlay }: { videos: string[], onPlay: (url: st
       })}
 
       {/* Controls */}
-      <div className="absolute -bottom-24 flex items-center gap-6 z-50">
+      <div className="absolute -bottom-10 md:-bottom-24 flex items-center gap-6 z-50">
         <button 
           onClick={handlePrev} 
           disabled={activeIndex === 0}
@@ -372,22 +376,38 @@ const LongformAccordion = ({ videos, onPlay }: { videos: string[], onPlay: (url:
 
 // --- 2. COMMERCIAL: Dynamic Masonry (Perfect for Mixed Aspect Ratios) ---
 const CommercialMasonryCard = ({ videoUrl, index, onPlay }: { videoUrl: string, index: number, onPlay: () => void }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isHovered, setIsHovered] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(false);
   
   const thumbnailUrl = videoUrl.replace('.mp4', '.jpg');
 
   useEffect(() => {
-    if (isHovered && videoRef.current) {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsAutoPlaying(entry.isIntersecting);
+      },
+      { threshold: 0.6 } // Play when at least 60% visible
+    );
+    if (containerRef.current) observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  const shouldPlay = isHovered || isAutoPlaying;
+
+  useEffect(() => {
+    if (shouldPlay && videoRef.current) {
       videoRef.current.play().catch(() => {});
-    } else if (!isHovered && videoRef.current) {
+    } else if (!shouldPlay && videoRef.current) {
       videoRef.current.pause();
     }
-  }, [isHovered]);
+  }, [shouldPlay]);
 
   return (
     <motion.div 
+      ref={containerRef as any}
       className="relative w-full rounded-[2rem] overflow-hidden bg-[#050505] border border-white/5 shadow-[0_20px_40px_rgba(0,0,0,0.8)] mb-4 md:mb-8 group cursor-pointer break-inside-avoid"
       onMouseEnter={() => setIsHovered(true)} 
       onMouseLeave={() => setIsHovered(false)}
@@ -398,7 +418,7 @@ const CommercialMasonryCard = ({ videoUrl, index, onPlay }: { videoUrl: string, 
       transition={{ duration: 0.8, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
     >
        {/* Base image defines the exact intrinsic height natively without forcing crops */}
-       <img src={thumbnailUrl} className={`w-full h-auto object-contain transition-all duration-700 ${isHovered ? 'opacity-0 scale-105' : 'opacity-100 scale-100 grayscale opacity-60'}`} />
+       <img src={thumbnailUrl} className={`w-full h-auto object-contain transition-all duration-700 ${shouldPlay ? 'opacity-0 scale-105' : 'opacity-100 scale-100 grayscale opacity-60'}`} />
        
        <video 
          ref={videoRef} 
@@ -407,18 +427,18 @@ const CommercialMasonryCard = ({ videoUrl, index, onPlay }: { videoUrl: string, 
          muted={isMuted} 
          loop 
          playsInline 
-         className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 ${isHovered ? 'opacity-100 scale-100' : 'opacity-0 scale-105'}`} 
+         className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 ${shouldPlay ? 'opacity-100 scale-100' : 'opacity-0 scale-105'}`} 
        />
        
-       <div className={`absolute inset-0 flex flex-col justify-end p-6 md:p-8 transition-opacity duration-500 bg-gradient-to-t from-black/90 via-black/20 to-transparent ${isHovered ? 'opacity-100' : 'opacity-0'}`}>
-          <div className="flex flex-col gap-2 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+       <div className={`absolute inset-0 flex flex-col justify-end p-6 md:p-8 transition-opacity duration-500 bg-gradient-to-t from-black/90 via-black/20 to-transparent ${shouldPlay ? 'opacity-100' : 'opacity-0'}`}>
+          <div className={`flex flex-col gap-2 transition-transform duration-500 ${shouldPlay ? 'translate-y-0' : 'translate-y-4'}`}>
              <span className="font-sans text-[10px] tracking-[0.2em] text-[#00ff88] uppercase">Commercial</span>
              <span className="font-cormorant italic text-2xl md:text-3xl text-white truncate">Campaign_{index + 1}</span>
           </div>
        </div>
 
-       {isHovered && (
-          <button onClick={(e) => { e.stopPropagation(); setIsMuted(!isMuted); }} className="absolute top-6 right-6 w-10 h-10 rounded-full bg-black/60 backdrop-blur-xl border border-white/20 flex items-center justify-center text-white hover:scale-110 hover:bg-white/10 transition-all z-20">
+       {shouldPlay && (
+          <button onClick={(e) => { e.stopPropagation(); setIsMuted(!isMuted); }} className="absolute top-6 right-6 w-10 h-10 rounded-full bg-black/60 backdrop-blur-xl border border-white/20 flex items-center justify-center text-white hover:scale-110 hover:bg-white/10 transition-all z-20 pointer-events-auto">
              {isMuted ? <VolumeOffIcon /> : <VolumeOnIcon />}
           </button>
        )}
@@ -558,7 +578,7 @@ const shortVideos = [
 
 const Section = ({ script, main, tools, children }: { script: string, main: string, tools?: React.ReactNode, children: React.ReactNode }) => {
   return (
-    <div className="flex flex-col xl:flex-row items-start justify-center gap-8 md:gap-16 xl:gap-32 w-full max-w-[90rem] mx-auto my-24 md:my-40 relative z-10 px-6 md:px-16">
+    <div className="flex flex-col xl:flex-row items-start justify-center gap-8 md:gap-16 xl:gap-32 w-full max-w-[90rem] mx-auto my-12 md:my-40 relative z-10 px-6 md:px-16">
       
       {/* Sticky Typography Column */}
       <div className="xl:w-1/3 flex flex-col items-start text-left w-full sticky top-0 md:top-40 z-30 pt-24 pb-8 md:pt-0 md:pb-0 bg-gradient-to-b from-[#030303] via-[#030303]/95 to-transparent md:bg-none -mt-24 md:mt-0">
@@ -673,7 +693,7 @@ export default function VideoEditorClient() {
       </motion.div>
 
       {/* Content Container */}
-      <div className="relative z-10 w-full pt-48 pb-48 flex flex-col items-center">
+      <div className="relative z-10 w-full pt-16 md:pt-48 pb-24 md:pb-48 flex flex-col items-center">
 
         {/* 1. Software SKILLS */}
         <Section 

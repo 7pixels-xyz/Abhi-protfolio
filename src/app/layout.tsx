@@ -6,6 +6,7 @@ import SmoothScrollProvider from '@/components/SmoothScrollProvider';
 import Header from '@/components/Header';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import LightbulbToggle from '@/components/LightbulbToggle';
+import CallSheet from '@/components/CallSheet';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-playfair' });
@@ -38,6 +39,7 @@ export default function RootLayout({
             <Header />
             <LightbulbToggle />
             {children}
+            <CallSheet />
           </SmoothScrollProvider>
         </ThemeProvider>
       </body>
