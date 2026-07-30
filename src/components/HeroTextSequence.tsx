@@ -83,11 +83,11 @@ export default function HeroTextSequence() {
       scale: 1,
     },
     topLeft: {
-      top: isMobile ? "18%" : "8%",
-      left: isMobile ? "5%" : "4%",
-      x: "0%",
+      top: isMobile ? "25%" : "8%",
+      left: isMobile ? "50%" : "4%",
+      x: isMobile ? "-50%" : "0%",
       y: "0%",
-      scale: isMobile ? 0.6 : 0.3, // Larger on mobile
+      scale: isMobile ? 0.7 : 0.3, // Centered and premium on mobile
     }
   };
 
@@ -125,15 +125,16 @@ export default function HeroTextSequence() {
               </motion.div>
               <motion.div 
                 className="relative flex items-center justify-center w-max mx-auto pointer-events-none"
-                initial={{ x: 0 }}
-                animate={{ x: 0 }} 
+                initial={{ x: '10vw' }}
+                animate={{ x: showImage ? '-2vw' : '10vw' }} 
+                transition={{ type: 'spring', stiffness: 200, damping: 15 }}
               >
                 <motion.div className="flex-shrink-0 z-50 pointer-events-auto">
                   <RepellingText 
                     text="Abhi" 
                     isVisible={activeStep === 0}
                     highlightWord="Abhi"
-                    isPushed={showImage}
+                    isPushed={false} // Container moves instead
                     isMobile={isMobile}
                     className="text-8xl font-playfair font-bold text-white tracking-normal luxury-text-shadow drop-shadow-2xl whitespace-nowrap"
                   />
@@ -142,19 +143,13 @@ export default function HeroTextSequence() {
                 <AnimatePresence>
                   {showImage && activeStep === 0 && (
                     <motion.div
-                      initial={{ opacity: 0, x: '40vw', rotate: 90 }}
-                      animate={{ opacity: 1, x: showImage ? '-5vw' : 0, rotate: 0 }}
+                      initial={{ opacity: 0, scale: 0.5, rotate: 90 }}
+                      animate={{ opacity: 1, scale: 1, rotate: 0 }}
                       exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.3 } }}
                       transition={{ type: 'spring', stiffness: 200, damping: 15 }} 
                       onAnimationComplete={() => setImageLanded(true)} 
 
-                      className="absolute top-1/2 -translate-y-1/2 -right-[10px] w-[90px] h-[90px] rounded-full overflow-hidden border-[4px] border-white/90 shadow-[0_30px_60px_rgba(0,0,0,0.4)] flex-shrink-0 pointer-events-auto cursor-none z-40"
-                      data-cursor-type="drag"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      drag
-                      dragConstraints={{ left: -30, right: 30, top: -30, bottom: 30 }}
-                      dragElastic={0.4}
+                      className="ml-4 w-[80px] h-[80px] rounded-full overflow-hidden border-[4px] border-white/90 shadow-[0_30px_60px_rgba(0,0,0,0.4)] flex-shrink-0 pointer-events-auto z-40"
                     >
                       <img src="/abhi.jpg" alt="Abhi" className="w-full h-full object-cover pointer-events-none" />
                     </motion.div>

@@ -4,14 +4,16 @@ import { motion } from 'framer-motion';
 import { useRef } from 'react';
 
 const tags = [
-  // Orbiting tightly around the center text
-  { id: 1, text: 'Designer', initialX: '25%', initialY: '30%', rotate: -3, cursorText: 'obsessed with aesthetics' },
-  { id: 6, text: 'Copywriter', initialX: '20%', initialY: '65%', rotate: 6, cursorText: 'words that sell' },
-  { id: 2, text: 'Creative', initialX: '65%', initialY: '25%', rotate: 5, cursorText: 'out of the box thinking' },
-  { id: 5, text: 'Web Designer', initialX: '70%', initialY: '68%', rotate: -4, cursorText: 'pixel perfect execution' },
-  { id: 4, text: 'Developer', initialX: '10%', initialY: '48%', rotate: 4, cursorText: 'i speak computer' },
-  { id: 3, text: 'Builder', initialX: '85%', initialY: '42%', rotate: -2, cursorText: 'from scratch, always' },
-  { id: 7, text: 'Cinematographer', initialX: '45%', initialY: '80%', rotate: -3, cursorText: 'painting with light' },
+  // Top Orbit (Y < 25%)
+  { id: 1, text: 'Designer', initialX: '15%', initialY: '18%', rotate: -3, cursorText: 'obsessed with aesthetics' },
+  { id: 2, text: 'Creative', initialX: '65%', initialY: '15%', rotate: 5, cursorText: 'out of the box thinking' },
+  { id: 4, text: 'Developer', initialX: '40%', initialY: '22%', rotate: 4, cursorText: 'i speak computer' },
+  
+  // Bottom Orbit (Y > 75%)
+  { id: 6, text: 'Copywriter', initialX: '20%', initialY: '78%', rotate: 6, cursorText: 'words that sell' },
+  { id: 5, text: 'Web Designer', initialX: '70%', initialY: '82%', rotate: -4, cursorText: 'pixel perfect execution' },
+  { id: 3, text: 'Builder', initialX: '85%', initialY: '76%', rotate: -2, cursorText: 'from scratch, always' },
+  { id: 7, text: 'Cinematographer', initialX: '45%', initialY: '88%', rotate: -3, cursorText: 'painting with light' },
 ];
 
 export default function HeroTags() {
