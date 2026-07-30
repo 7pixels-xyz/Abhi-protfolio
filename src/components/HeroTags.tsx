@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
 
 const tags = [
@@ -19,6 +19,8 @@ const tags = [
 export default function HeroTags() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isMobile, setIsMobile] = useState(false);
+  const { scrollY } = useScroll();
+  const opacity = useTransform(scrollY, [0, 300], [1, 0]);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -45,7 +47,7 @@ export default function HeroTags() {
           }}
           transition={{ type: 'spring', stiffness: 50, damping: 20 }}
           className="absolute pointer-events-auto draggable"
-          style={{ willChange: 'transform' }}
+          style={{ willChange: 'transform', opacity }}
           data-cursor-text={tag.cursorText || undefined}
         >
           <div className="premium-glass px-6 py-3 rounded-full font-sans text-[11px] sm:text-xs font-semibold tracking-[0.2em] text-white/90 uppercase select-none transition-colors duration-300 hover:text-white"
