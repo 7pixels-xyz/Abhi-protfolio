@@ -17,11 +17,23 @@ export default function AboutMeSection() {
   const y1 = useTransform(scrollYProgress, [0, 1], [100, -100]);
   const y2 = useTransform(scrollYProgress, [0, 1], [0, -50]);
 
-  // Solid yellow background as requested. Dark typography.
-  const bgColor = isNight ? 'bg-[#EAB308]' : 'bg-[#FFCC00]';
-  const textColor = 'text-[#0a0a0a]';
-  const mutedText = 'text-[#0a0a0a]/70';
-  const borderColor = 'border-[#0a0a0a]/10';
+  // Theme responsive styling
+  const bgColor = isNight ? 'bg-[#050505]' : 'bg-[#FFCC00]';
+  const textColor = isNight ? 'text-white' : 'text-[#0a0a0a]';
+  const mutedText = isNight ? 'text-white/50' : 'text-[#0a0a0a]/70';
+  const borderColor = isNight ? 'border-white/10' : 'border-[#0a0a0a]/10';
+  const yellowAccent = '#FFD700'; // For night mode highlights
+
+  // Dynamic values for elements that change completely between themes
+  const highlightClass = isNight ? '' : 'text-white drop-shadow-md';
+  const highlightStyle = isNight ? { color: yellowAccent } : {};
+  const paragraphWeight = isNight ? 'font-light text-white/80' : `font-medium ${textColor} opacity-90`;
+  const orb1Color = isNight ? yellowAccent : 'rgba(255,255,255,0.8)';
+  const orb2Color = isNight ? yellowAccent : 'rgba(255,255,255,0.6)';
+  const orbOpacity1 = isNight ? 'opacity-20' : 'opacity-40';
+  const orbOpacity2 = isNight ? 'opacity-10' : 'opacity-30';
+  const floatingAccentStyle = isNight ? { backgroundColor: yellowAccent } : { backgroundColor: '#0a0a0a' };
+  const floatingAccentBorder = isNight ? 'border-white/20' : 'border-[#0a0a0a]/30';
 
   return (
     <section 
@@ -30,12 +42,12 @@ export default function AboutMeSection() {
     >
       {/* Subtle Glowing Accents */}
       <motion.div 
-        className="absolute top-0 right-0 w-[50vw] h-[50vw] rounded-full blur-[150px] opacity-40 pointer-events-none"
-        style={{ background: `radial-gradient(circle, rgba(255,255,255,0.8), transparent)` }}
+        className={`absolute top-0 right-0 w-[50vw] h-[50vw] rounded-full blur-[150px] ${orbOpacity1} pointer-events-none transition-all duration-700`}
+        style={{ background: `radial-gradient(circle, ${orb1Color}, transparent)` }}
       />
       <motion.div 
-        className="absolute bottom-0 left-0 w-[40vw] h-[40vw] rounded-full blur-[120px] opacity-30 pointer-events-none"
-        style={{ background: `radial-gradient(circle, rgba(255,255,255,0.6), transparent)` }}
+        className={`absolute bottom-0 left-0 w-[40vw] h-[40vw] rounded-full blur-[120px] ${orbOpacity2} pointer-events-none transition-all duration-700`}
+        style={{ background: `radial-gradient(circle, ${orb2Color}, transparent)` }}
       />
 
       <div className="w-full max-w-7xl mx-auto flex flex-col-reverse lg:flex-row items-center lg:items-start gap-16 lg:gap-24 relative z-10">
@@ -49,25 +61,25 @@ export default function AboutMeSection() {
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
           >
-            <span className={`font-mono text-[10px] md:text-xs uppercase tracking-[0.4em] ${mutedText} mb-8 block`}>
+            <span className={`font-mono text-[10px] md:text-xs uppercase tracking-[0.4em] ${mutedText} mb-8 block transition-colors duration-700`}>
               // Philosophy
             </span>
-            <h2 className={`font-sans font-black text-3xl md:text-5xl lg:text-6xl leading-[1.1] tracking-tight mb-16 ${textColor}`}>
-              My standard <span className="font-cormorant italic font-light text-white drop-shadow-md">never changes.</span> Whether a project is free or worth a million dollars, I approach it with the same level of dedication, precision, and care. 
+            <h2 className={`font-sans font-black text-3xl md:text-5xl lg:text-6xl leading-[1.1] tracking-tight mb-16 ${textColor} transition-colors duration-700`}>
+              My standard <span className={`font-cormorant italic font-light ${highlightClass} transition-colors duration-700`} style={highlightStyle}>never changes.</span> Whether a project is free or worth a million dollars, I approach it with the same level of dedication, precision, and care. 
               <br/><br/>
-              If my name is on something, it has to be something I'm proud of. <span className="text-white drop-shadow-md">I don't create average work because I simply can't settle for it.</span>
+              If my name is on something, it has to be something I'm proud of. <span className={`${highlightClass} transition-colors duration-700`} style={highlightStyle}>I don't create average work because I simply can't settle for it.</span>
             </h2>
           </motion.div>
 
-          <div className={`grid grid-cols-1 md:grid-cols-2 gap-12 mt-8 border-t ${borderColor} pt-16`}>
+          <div className={`grid grid-cols-1 md:grid-cols-2 gap-12 mt-8 border-t ${borderColor} pt-16 transition-colors duration-700`}>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             >
-              <span className={`font-mono text-[10px] uppercase tracking-[0.3em] ${mutedText} mb-4 block font-semibold`}>Origin</span>
-              <p className={`font-sans text-sm md:text-base font-medium ${textColor} leading-relaxed opacity-90`}>
+              <span className={`font-mono text-[10px] uppercase tracking-[0.3em] ${mutedText} mb-4 block ${isNight ? '' : 'font-semibold'} transition-colors duration-700`}>Origin</span>
+              <p className={`font-sans text-sm md:text-base ${paragraphWeight} leading-relaxed transition-colors duration-700`}>
                 Based in Punjab, India, I've spent the past five years developing my skills across video editing, web design, cinematography, and content creation. 
                 <br/><br/>
                 My journey began with a gaming YouTube channel, where I first learned the craft of editing. Over time, that curiosity evolved into mastering multiple creative disciplines that now come together to build compelling digital experiences.
@@ -80,8 +92,8 @@ export default function AboutMeSection() {
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
             >
-              <span className={`font-mono text-[10px] uppercase tracking-[0.3em] ${mutedText} mb-4 block font-semibold`}>The Human Element</span>
-              <p className={`font-sans text-sm md:text-base font-medium ${textColor} leading-relaxed opacity-90`}>
+              <span className={`font-mono text-[10px] uppercase tracking-[0.3em] ${mutedText} mb-4 block ${isNight ? '' : 'font-semibold'} transition-colors duration-700`}>The Human Element</span>
+              <p className={`font-sans text-sm md:text-base ${paragraphWeight} leading-relaxed transition-colors duration-700`}>
                 Outside of work, I'm fascinated by how people think. I spend a lot of time studying psychology, business strategy, and storytelling.
                 <br/><br/>
                 Why? Because understanding people is what makes great design and content truly effective.
@@ -96,9 +108,9 @@ export default function AboutMeSection() {
           style={{ y: y1 }}
         >
           {/* Portrait Container */}
-          <div className="w-full aspect-[3/4] relative rounded-3xl overflow-hidden group shadow-2xl">
+          <div className={`w-full aspect-[3/4] relative rounded-3xl overflow-hidden group shadow-2xl transition-colors duration-700`}>
             {/* Dark background base for portrait to contrast with yellow */}
-            <div className="absolute inset-0 bg-[#050505] rounded-3xl" />
+            <div className={`absolute inset-0 ${isNight ? 'bg-[#0f0f0f]' : 'bg-[#050505]'} rounded-3xl transition-colors duration-700`} />
             
             {/* The Cutout Image */}
             <div 
@@ -116,11 +128,11 @@ export default function AboutMeSection() {
 
           {/* Floating Accents */}
           <motion.div 
-            className="absolute -right-12 top-20 w-32 h-32 rounded-full border border-dashed border-[#0a0a0a]/30 flex items-center justify-center"
+            className={`absolute -right-12 top-20 w-32 h-32 rounded-full border border-dashed ${floatingAccentBorder} flex items-center justify-center transition-colors duration-700 ${isNight ? 'opacity-50' : 'opacity-100'}`}
             animate={{ rotate: 360 }}
             transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
           >
-            <div className="w-2 h-2 rounded-full bg-[#0a0a0a]" />
+            <div className="w-2 h-2 rounded-full transition-colors duration-700" style={floatingAccentStyle} />
           </motion.div>
         </motion.div>
         
