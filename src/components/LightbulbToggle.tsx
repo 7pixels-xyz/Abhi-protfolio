@@ -1,26 +1,55 @@
 'use client';
 
-import { motion, useMotionValue, useTransform } from 'framer-motion';
+import { motion, useMotionValue, useTransform, AnimatePresence } from 'framer-motion';
 import { useTheme } from './ThemeProvider';
+import { usePathname } from 'next/navigation';
+import { useState } from 'react';
 
 export default function LightbulbToggle() {
   const { theme, toggleTheme } = useTheme();
+  const pathname = usePathname();
   const y = useMotionValue(0);
+  const [showToast, setShowToast] = useState(false);
+  
+  const isVideoPage = pathname === '/niche/video-editing';
+  const isNight = isVideoPage ? true : theme === 'night';
   
   // When pulled down sufficiently, the string glows slightly
   const stringColor = useTransform(y, [0, 80], ['#555555', '#FFD700']);
   
-  const handleDragEnd = (event: any, info: any) => {
-    // If pulled down more than 40px, toggle theme
-    if (info.offset.y > 40) {
+  const handleAttemptToggle = () => {
+    if (isVideoPage) {
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 3000);
+    } else {
       toggleTheme();
     }
   };
 
-  const isNight = theme === 'night';
+  const handleDragEnd = (event: any, info: any) => {
+    // If pulled down more than 40px, toggle theme
+    if (info.offset.y > 40) {
+      handleAttemptToggle();
+    }
+  };
 
   return (
     <div className="fixed top-0 right-4 md:right-12 z-[100] flex flex-col items-center origin-top-right scale-75 md:scale-100 pb-20">
+      
+      {/* Toast Notification */}
+      <AnimatePresence>
+        {showToast && (
+          <motion.div 
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 20 }}
+            className="absolute top-24 right-full mr-2 md:mr-6 whitespace-nowrap bg-black/80 backdrop-blur-md text-white/90 text-[10px] md:text-xs font-mono tracking-widest px-4 py-2 rounded-full border border-white/10 pointer-events-none"
+          >
+            There is no switch on this page.
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* The Wire connecting to ceiling */}
       <motion.div 
          className="w-1 bg-[#222] shadow-[inset_1px_0_2px_rgba(255,255,255,0.2)] origin-top" 
@@ -30,7 +59,7 @@ export default function LightbulbToggle() {
       {/* The Bulb (Clickable and Draggable) */}
       <motion.div 
         className="relative cursor-grab active:cursor-grabbing origin-top z-30 flex flex-col items-center"
-        onClick={toggleTheme}
+        onClick={handleAttemptToggle}
         drag="y"
         dragConstraints={{ top: 0, bottom: 0 }}
         dragElastic={0.6}
