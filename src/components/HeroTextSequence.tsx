@@ -135,7 +135,7 @@ export default function HeroTextSequence() {
                     highlightWord="Abhi"
                     isPushed={showImage}
                     isMobile={isMobile}
-                    className="text-8xl font-playfair font-bold text-white tracking-tight luxury-text-shadow drop-shadow-2xl whitespace-nowrap"
+                    className="text-8xl font-playfair font-bold text-white tracking-normal luxury-text-shadow drop-shadow-2xl whitespace-nowrap"
                   />
                 </motion.div>
 
@@ -143,12 +143,12 @@ export default function HeroTextSequence() {
                   {showImage && activeStep === 0 && (
                     <motion.div
                       initial={{ opacity: 0, x: '40vw', rotate: 90 }}
-                      animate={{ opacity: 1, x: showImage ? '-20vw' : 0, rotate: 0 }}
+                      animate={{ opacity: 1, x: showImage ? '-5vw' : 0, rotate: 0 }}
                       exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.3 } }}
                       transition={{ type: 'spring', stiffness: 200, damping: 15 }} 
                       onAnimationComplete={() => setImageLanded(true)} 
 
-                      className="absolute top-1/2 -translate-y-1/2 -right-[120px] w-[90px] h-[90px] rounded-full overflow-hidden border-[4px] border-white/90 shadow-[0_30px_60px_rgba(0,0,0,0.4)] flex-shrink-0 pointer-events-auto cursor-none z-40"
+                      className="absolute top-1/2 -translate-y-1/2 -right-[10px] w-[90px] h-[90px] rounded-full overflow-hidden border-[4px] border-white/90 shadow-[0_30px_60px_rgba(0,0,0,0.4)] flex-shrink-0 pointer-events-auto cursor-none z-40"
                       data-cursor-type="drag"
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}

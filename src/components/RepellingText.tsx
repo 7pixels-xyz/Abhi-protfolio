@@ -58,8 +58,8 @@ export default function RepellingText({
         // Calculate the push offset for each word. Word 0 ("This") stays at 0.
         // Word 1 ("is") moves left. Word 2 ("Abhi") moves further left.
         // We push strictly LEFT (x axis) for both desktop and mobile.
-        // Mobile needs a slightly higher vw multiplier because viewport is narrower.
-        const pushOffset = isPushed ? -(wIdx * (isMobile ? 6 : 3)) : 0; 
+        // On mobile, text="Abhi" is just one word (wIdx=0), but it still needs to be pushed by the image!
+        const pushOffset = isPushed ? (isMobile ? -10 : -(wIdx * 3)) : 0;
 
         return (
           <motion.div 
