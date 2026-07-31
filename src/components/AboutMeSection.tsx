@@ -6,6 +6,7 @@ import { useTheme } from './ThemeProvider';
 
 export default function AboutMeSection() {
   const containerRef = useRef(null);
+  const portraitRef = useRef(null);
   const { theme } = useTheme();
   const isNight = theme === 'night';
 
@@ -13,6 +14,12 @@ export default function AboutMeSection() {
     target: containerRef,
     offset: ["start end", "end start"]
   });
+
+  const { scrollYProgress: portraitScrollY } = useScroll({
+    target: portraitRef,
+    offset: ["start end", "end start"]
+  });
+  const mobileGrayscale = useTransform(portraitScrollY, [0.1, 0.4, 0.6, 0.9], ["100%", "0%", "0%", "100%"]);
 
   const y1 = useTransform(scrollYProgress, [0, 1], [100, -100]);
   const y2 = useTransform(scrollYProgress, [0, 1], [0, -50]);
@@ -50,7 +57,7 @@ export default function AboutMeSection() {
         style={{ background: `radial-gradient(circle, ${orb2Color}, transparent)` }}
       />
 
-      <div className="w-full max-w-7xl mx-auto flex flex-col-reverse lg:flex-row items-center lg:items-start gap-16 lg:gap-24 relative z-10">
+      <div className="w-full max-w-7xl mx-auto flex flex-col-reverse lg:flex-row-reverse items-center lg:items-start gap-16 lg:gap-24 relative z-10">
         
         {/* Left Side: 60% Typography */}
         <div className="w-full lg:w-[60%] flex flex-col">
@@ -61,24 +68,34 @@ export default function AboutMeSection() {
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
           >
-            <span className={`font-mono text-[10px] md:text-xs uppercase tracking-[0.4em] ${mutedText} mb-8 block transition-colors duration-700`}>
-              // Philosophy
-            </span>
+            <div className="flex items-center gap-3 mb-8">
+              <span className={`w-2 h-2 rounded-full ${isNight ? 'bg-[#FFD700] shadow-[0_0_10px_#FFD700]' : 'bg-[#0a0a0a]'} animate-pulse`} />
+              <span className={`font-mono text-[10px] md:text-xs uppercase tracking-[0.4em] ${mutedText} transition-colors duration-700`}>
+                // 01 — PHILOSOPHY & VISION
+              </span>
+            </div>
+            
             <h2 className={`font-sans font-black text-3xl md:text-5xl lg:text-6xl leading-[1.1] tracking-tight mb-16 ${textColor} transition-colors duration-700`}>
-              My standard <span className={`font-cormorant italic font-light ${highlightClass} transition-colors duration-700`} style={highlightStyle}>never changes.</span> Whether a project is free or worth a million dollars, I approach it with the same level of dedication, precision, and care. 
+              My standard <span className={`font-instrument italic font-normal ${highlightClass} transition-colors duration-700`} style={highlightStyle}>never changes.</span> Whether a project is free or worth a million dollars, I approach it with the same level of dedication, precision, and care. 
               <br/><br/>
               If my name is on something, it has to be something I'm proud of. <span className={`${highlightClass} transition-colors duration-700`} style={highlightStyle}>I don't create average work because I simply can't settle for it.</span>
             </h2>
           </motion.div>
 
-          <div className={`grid grid-cols-1 md:grid-cols-2 gap-12 mt-8 border-t ${borderColor} pt-16 transition-colors duration-700`}>
+          <div className={`grid grid-cols-1 md:grid-cols-2 gap-8 mt-8 border-t ${borderColor} pt-12 transition-colors duration-700`}>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              className={`p-6 rounded-2xl border ${borderColor} ${isNight ? 'bg-white/[0.02] hover:bg-white/[0.05]' : 'bg-black/[0.03] hover:bg-black/[0.06]'} transition-all duration-500 backdrop-blur-sm group`}
             >
-              <span className={`font-mono text-[10px] uppercase tracking-[0.3em] ${mutedText} mb-4 block ${isNight ? '' : 'font-semibold'} transition-colors duration-700`}>Origin</span>
+              <div className="flex items-center justify-between mb-4">
+                <span className={`font-mono text-[10px] uppercase tracking-[0.3em] ${mutedText} ${isNight ? '' : 'font-semibold'} transition-colors duration-700`}>
+                  Origin // 01
+                </span>
+                <span className={`w-1.5 h-1.5 rounded-full ${isNight ? 'bg-white/30 group-hover:bg-[#FFD700]' : 'bg-black/30 group-hover:bg-black'} transition-colors`} />
+              </div>
               <p className={`font-sans text-sm md:text-base ${paragraphWeight} leading-relaxed transition-colors duration-700`}>
                 Based in Punjab, India, I've spent the past five years developing my skills across video editing, web design, cinematography, and content creation. 
                 <br/><br/>
@@ -91,8 +108,14 @@ export default function AboutMeSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              className={`p-6 rounded-2xl border ${borderColor} ${isNight ? 'bg-white/[0.02] hover:bg-white/[0.05]' : 'bg-black/[0.03] hover:bg-black/[0.06]'} transition-all duration-500 backdrop-blur-sm group`}
             >
-              <span className={`font-mono text-[10px] uppercase tracking-[0.3em] ${mutedText} mb-4 block ${isNight ? '' : 'font-semibold'} transition-colors duration-700`}>The Human Element</span>
+              <div className="flex items-center justify-between mb-4">
+                <span className={`font-mono text-[10px] uppercase tracking-[0.3em] ${mutedText} ${isNight ? '' : 'font-semibold'} transition-colors duration-700`}>
+                  Human Element // 02
+                </span>
+                <span className={`w-1.5 h-1.5 rounded-full ${isNight ? 'bg-white/30 group-hover:bg-[#FFD700]' : 'bg-black/30 group-hover:bg-black'} transition-colors`} />
+              </div>
               <p className={`font-sans text-sm md:text-base ${paragraphWeight} leading-relaxed transition-colors duration-700`}>
                 Outside of work, I'm fascinated by how people think. I spend a lot of time studying psychology, business strategy, and storytelling.
                 <br/><br/>
@@ -104,8 +127,9 @@ export default function AboutMeSection() {
 
         {/* Right Side: 30% Portrait / Visual */}
         <motion.div 
+          ref={portraitRef}
           className="w-full lg:w-[35%] relative"
-          style={{ y: y1 }}
+          style={{ y: y1, "--mobile-grayscale": mobileGrayscale } as any}
         >
           {/* Portrait Container */}
           <div className={`w-full aspect-[3/4] relative rounded-3xl overflow-hidden group shadow-2xl transition-colors duration-700`}>
@@ -114,8 +138,8 @@ export default function AboutMeSection() {
             
             {/* The Cutout Image */}
             <div 
-              className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-1000 group-hover:scale-105"
-              style={{ backgroundImage: `url('/cutout.png')`, filter: 'grayscale(100%) contrast(1.1) brightness(1.1)' }}
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-1000 group-hover:scale-105 max-lg:[filter:grayscale(var(--mobile-grayscale,100%))_contrast(1.1)_brightness(1.1)] lg:[filter:grayscale(100%)_contrast(1.1)_brightness(1.1)] lg:group-hover:[filter:grayscale(0%)_contrast(1.1)_brightness(1.1)] lg:transition-[filter] lg:duration-700"
+              style={{ backgroundImage: `url('https://res.cloudinary.com/adwbvkcv/image/upload/v1785476725/portrate_ku2xv0.png')` }}
             />
             
             {/* Overlay Gradient for integration */}

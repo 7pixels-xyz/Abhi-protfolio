@@ -1,8 +1,20 @@
 @import "tailwindcss";
 
 @theme {
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-instrument: var(--font-instrument), serif;
+  --font-cinzel: var(--font-cinzel), serif;
   --font-cormorant: var(--font-cormorant), serif;
   --font-bodoni: var(--font-bodoni), serif;
+
+  /* Dynamic Theme Colors for Web Design Page */
+  --color-wd-bg-main: var(--theme-bg-main);
+  --color-wd-bg-card: var(--theme-bg-card);
+  --color-wd-bg-darker: var(--theme-bg-darker);
+  --color-wd-text: var(--theme-text);
+  --color-wd-border: var(--theme-border);
+  --color-wd-glass: var(--theme-glass);
+  --color-wd-portfolio: var(--theme-portfolio-color);
 }
 
 @layer base {
@@ -11,10 +23,32 @@
     --text-main: #FFFFFF;
     --text-muted: rgba(255, 255, 255, 0.7);
     --accent: #2563EB; /* Figma blue cursor color */
+
+    /* Web Design Page (Day Theme) */
+    --theme-bg-main: #F8F9FA;
+    --theme-bg-card: #FFFFFF;
+    --theme-bg-darker: #F0F2F5;
+    --theme-text: #050505;
+    --theme-border: #050505;
+    --theme-glass: #FFFFFF;
+    --theme-portfolio-blend: normal;
+    --theme-portfolio-color: rgba(193, 0, 22, 0.05);
+    --theme-logo-invert: 0;
   }
 
   :root.night-theme {
     --bg-sky: #090a0f; /* Deep dark night sky */
+    
+    /* Web Design Page (Night Theme) */
+    --theme-bg-main: #050505;
+    --theme-bg-card: #0A0A0A;
+    --theme-bg-darker: #020202;
+    --theme-text: #FFFFFF;
+    --theme-border: #FFFFFF;
+    --theme-glass: #000000;
+    --theme-portfolio-blend: screen;
+    --theme-portfolio-color: #C10016;
+    --theme-logo-invert: 1;
   }
 
   body {

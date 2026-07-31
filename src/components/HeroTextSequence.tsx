@@ -1,6 +1,6 @@
 'use client';
 
-import { useScroll, useTransform, AnimatePresence } from 'framer-motion';
+import { useScroll, useTransform, AnimatePresence, useMotionValue } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import RepellingText from './RepellingText';
@@ -54,56 +54,39 @@ export default function HeroTextSequence() {
     }
   }, [activeStep]);
 
+  // The parent container is 250vh. 
+  // By 1.5vh scrolled, the parent is almost ending. 
+  // We want to slide it up starting at 1.8vh to clear the screen for AboutMeSection.
+  const globalY = useMotionValue(0);
+
   useEffect(() => {
     const handleScroll = (y: number) => {
-      // 0 to 0.5 vh
-      if (y < vh * 0.5) {
+      // Snappy, responsive step calculation
+      if (y < vh * 0.25) {
         setActiveStep(0);
-      } 
-      // 0.5 to 1.5 vh
-      else if (y >= vh * 0.5 && y < vh * 1.5) {
+      } else if (y >= vh * 0.25 && y < vh * 0.7) {
         setActiveStep(1);
-      } 
-      // past 1.5 vh
-      else {
+      } else {
         setActiveStep(2);
+      }
+      
+      // Global Y transform calculation matched to 180vh container
+      const startSlide = vh * 1.1;
+      const endSlide = vh * 1.7;
+      
+      if (y <= startSlide) {
+        globalY.set(0);
+      } else if (y >= endSlide) {
+        globalY.set(-vh * 1.2);
+      } else {
+        const progress = (y - startSlide) / (endSlide - startSlide);
+        globalY.set(progress * (-vh * 1.2));
       }
     };
 
     const unsubscribe = scrollY.on('change', handleScroll);
     return () => unsubscribe();
-  }, [scrollY, vh]);
-
-  const stepVariants = {
-    centered: {
-      top: "50%",
-      left: "50%",
-      x: "-50%",
-      y: "-50%",
-      scale: 1,
-    },
-    topLeft: {
-      top: isMobile ? "12%" : "8%",
-      left: "4%",
-      x: "0%",
-      y: "0%",
-      scale: isMobile ? 0.4 : 0.3, // Subtle logo look
-    }
-  };
-
-  // The parent container is 250vh. 
-  // By 1.5vh scrolled, the parent is almost ending. 
-  // We want to slide it up starting at 1.8vh to clear the screen for Manifesto.
-  // We'll use a state-based transform to avoid React render issues with useTransform directly inside render if vh changes.
-  const [globalYRange, setGlobalYRange] = useState({ input: [1800, 2600], output: [0, -1200] });
-  useEffect(() => {
-    setGlobalYRange({
-      input: [vh * 1.8, vh * 2.5],
-      output: [0, -vh * 1.5]
-    });
-  }, [vh]);
-
-  const globalY = useTransform(scrollY, globalYRange.input, globalYRange.output);
+  }, [scrollY, vh, globalY]);
 
   return (
     <motion.div 
@@ -114,9 +97,9 @@ export default function HeroTextSequence() {
         {/* Step 0: "This is Abhi" and the bouncing portrait */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           {isMobile ? (
-            <div className="relative flex flex-col items-center justify-center w-full mx-auto pointer-events-none gap-4">
+            <div className="relative flex flex-col items-center justify-center w-full mx-auto pointer-events-none gap-2">
               <motion.div 
-                className="text-6xl font-bold font-sans text-white tracking-tight luxury-text-shadow drop-shadow-2xl z-50 pointer-events-auto"
+                className="text-6xl font-black font-sans text-white tracking-tighter luxury-text-shadow drop-shadow-2xl z-50 pointer-events-auto uppercase"
                 initial={{ opacity: 0, y: 50, filter: 'blur(10px)' }}
                 animate={{ opacity: activeStep === 0 ? 1 : 0, y: activeStep === 0 ? 0 : -30, filter: activeStep === 0 ? 'blur(0px)' : 'blur(10px)', pointerEvents: activeStep === 0 ? 'auto' : 'none' }}
                 transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
@@ -136,7 +119,7 @@ export default function HeroTextSequence() {
                     highlightWord="Abhi"
                     isPushed={false} // Container moves instead
                     isMobile={isMobile}
-                    className="text-8xl font-playfair font-bold text-white tracking-normal luxury-text-shadow drop-shadow-2xl whitespace-nowrap"
+                    className="text-7xl font-cormorant font-light italic text-[#FFD700] tracking-wide luxury-text-shadow drop-shadow-2xl whitespace-nowrap"
                   />
                 </motion.div>
 
@@ -171,7 +154,7 @@ export default function HeroTextSequence() {
                   highlightWord="Abhi"
                   isPushed={showImage}
                   isMobile={isMobile}
-                  className="text-6xl sm:text-7xl md:text-8xl lg:text-[9vw] font-playfair font-bold md:font-medium text-white tracking-tight luxury-text-shadow drop-shadow-2xl whitespace-nowrap"
+                  className="text-6xl sm:text-7xl md:text-8xl lg:text-[9vw] font-sans font-black tracking-tighter text-white luxury-text-shadow drop-shadow-2xl whitespace-nowrap"
                 />
               </motion.div>
 
@@ -208,8 +191,14 @@ export default function HeroTextSequence() {
         {/* Jack of all trades text (Step 1 & 2) */}
         <motion.div 
           className="absolute z-50 pointer-events-none"
-          variants={stepVariants}
-          animate={activeStep >= 2 ? "topLeft" : "centered"}
+          initial={{ top: "50%", left: "50%", x: "-50%", y: "-50%", scale: 1 }}
+          animate={{
+            top: activeStep >= 2 ? (isMobile ? "12%" : "8%") : "50%",
+            left: activeStep >= 2 ? "4%" : "50%",
+            x: activeStep >= 2 ? "0%" : "-50%",
+            y: activeStep >= 2 ? "0%" : "-50%",
+            scale: activeStep >= 2 ? (isMobile ? 0.4 : 0.3) : 1
+          }}
           transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }} // Smooth, triggered keyframe animation
           style={{ transformOrigin: "top left" }}
         >
@@ -218,8 +207,8 @@ export default function HeroTextSequence() {
             className="text-4xl sm:text-5xl md:text-7xl lg:text-[8vw] leading-tight text-white luxury-text-shadow drop-shadow-2xl whitespace-nowrap flex items-center gap-[0.2em]"
             text={
               <>
-                <span className="font-sans font-bold tracking-tighter uppercase text-white">JACK OF ALL</span>
-                <span className="font-cormorant font-light italic tracking-wide lowercase text-[#FFD700]">trades</span>
+                <span className="font-sans font-black tracking-tighter uppercase text-white">JACK OF ALL</span>
+                <span className="font-instrument italic font-normal tracking-normal text-[#FFD700] text-[1.1em]">trades.</span>
               </>
             }
           />

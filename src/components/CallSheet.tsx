@@ -178,8 +178,9 @@ const GlobalFooter = () => {
 export default function CallSheet() {
   const pathname = usePathname();
   
-  if (pathname === '/niche/web-designing') {
-    return <WebDesignFooter />;
+  // The video editing and web designing pages have their own customized built-in footers
+  if (pathname === '/niche/video-editing' || pathname === '/niche/web-designing') {
+    return null;
   }
   
   return <GlobalFooter />;

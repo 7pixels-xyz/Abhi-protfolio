@@ -19,8 +19,8 @@ export default function Home() {
       {/* Z-0: Moving Clouds Background */}
       <CloudBackground />
 
-      {/* Hero Section Container (Increased height so it stays on screen for 2-3 scrolls) */}
-      <div className="relative w-full h-[250vh]">
+      {/* Hero Section Container (Optimized height for snappy scroll flow) */}
+      <div className="relative w-full h-[180vh]">
         
         {/* Z-10: Scroll Text Sequence */}
         <HeroTextSequence />

@@ -55,17 +55,13 @@ export default function RepellingText({
       {words.map((word, wIdx) => {
         const isHighlighted = word === highlightWord;
         
-        // Calculate the push offset for each word. Word 0 ("This") stays at 0.
-        // Word 1 ("is") moves left. Word 2 ("Abhi") moves further left.
-        // We push strictly LEFT (x axis) for both desktop and mobile.
-        // On mobile, text="Abhi" is just one word (wIdx=0), but it still needs to be pushed by the image!
+        // Calculate the push offset for each word.
         const pushOffset = isPushed ? (isMobile ? -10 : -(wIdx * 3)) : 0;
 
         return (
           <motion.div 
             key={wIdx} 
-            className={`flex ${isHighlighted ? 'font-bodoni italic' : ''}`} 
-            style={{ color: isHighlighted ? highlightColor : undefined }}
+            className={`flex ${isHighlighted ? 'font-instrument italic font-normal tracking-normal text-[#FFD700] text-[1.05em]' : 'font-sans font-black tracking-tighter text-white'}`} 
             initial={{ x: 0, y: 0 }}
             animate={{ x: `${pushOffset}vw`, y: 0 }}
             transition={{ type: 'spring', stiffness: 200, damping: 15 }}

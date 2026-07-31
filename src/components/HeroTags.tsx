@@ -31,27 +31,36 @@ export default function HeroTags() {
 
   return (
     <div ref={containerRef} className="absolute inset-0 z-30 pointer-events-none">
-      {tags.map((tag) => (
+      {tags.map((tag, idx) => (
         <motion.div
           key={tag.id}
           drag
           dragConstraints={containerRef}
           dragElastic={0.2}
-          whileDrag={{ scale: 1.05 }}
-          whileHover={{ scale: 1.02 }}
+          whileDrag={{ scale: 1.08 }}
+          whileHover={{ scale: 1.05 }}
           initial={false}
           animate={{
             left: isMobile ? tag.mobileX : tag.initialX,
             top: isMobile ? tag.mobileY : tag.initialY,
             rotate: tag.rotate,
+            y: [0, -8, 0],
           }}
-          transition={{ type: 'spring', stiffness: 50, damping: 20 }}
-          className="absolute pointer-events-auto draggable"
+          transition={{ 
+            left: { type: 'spring', stiffness: 50, damping: 20 },
+            top: { type: 'spring', stiffness: 50, damping: 20 },
+            rotate: { type: 'spring', stiffness: 50, damping: 20 },
+            y: { duration: 4 + (idx % 3), repeat: Infinity, ease: 'easeInOut', delay: idx * 0.4 }
+          }}
+          className="absolute pointer-events-auto draggable group"
           style={{ willChange: 'transform', opacity }}
           data-cursor-text={tag.cursorText || undefined}
         >
-          <div className="premium-glass px-6 py-3 rounded-full font-sans text-[11px] sm:text-xs font-semibold tracking-[0.2em] text-white/90 uppercase select-none transition-colors duration-300 hover:text-white"
-               style={{ cursor: 'none' }}>
+          <div 
+            className="premium-glass px-5 py-2.5 rounded-full font-sans text-[10px] sm:text-xs font-semibold tracking-[0.25em] text-white/90 uppercase select-none transition-all duration-500 hover:text-white border border-white/20 hover:border-white/60 shadow-[0_8px_32px_rgba(0,0,0,0.12)] hover:shadow-[0_12px_40px_rgba(255,255,255,0.25)] flex items-center gap-2.5 backdrop-blur-md"
+            style={{ cursor: 'none' }}
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-white/50 group-hover:bg-[#FFD700] transition-colors duration-300 shadow-[0_0_8px_rgba(255,215,0,0.8)]" />
             {tag.text}
           </div>
         </motion.div>

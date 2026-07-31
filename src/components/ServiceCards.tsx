@@ -7,6 +7,8 @@ import Link from 'next/link';
 const services = [
   {
     id: 1,
+    num: '01',
+    badge: 'PRECISE NARRATIVE',
     title: 'Video Editing',
     description: 'Precision cuts, seamless transitions, and narrative-driven pacing.',
     image: 'https://images.unsplash.com/photo-1536240478700-b869070f9279?auto=format&fit=crop&w=800&q=80',
@@ -14,6 +16,8 @@ const services = [
   },
   {
     id: 2,
+    num: '02',
+    badge: 'AWWARDS QUALITY',
     title: 'Web Designing',
     description: 'Ultra-fluid, highly interactive digital experiences built from scratch.',
     image: 'https://images.unsplash.com/photo-1547658719-da2b51159128?auto=format&fit=crop&w=800&q=80',
@@ -21,6 +25,8 @@ const services = [
   },
   {
     id: 3,
+    num: '03',
+    badge: 'CINEMATIC LIGHTING',
     title: 'Cinematography',
     description: 'Painting with light to capture breathtaking, cinematic visuals.',
     image: 'https://images.unsplash.com/photo-1601506521937-0121a7fc2a6b?auto=format&fit=crop&w=800&q=80',
@@ -28,6 +34,8 @@ const services = [
   },
   {
     id: 4,
+    num: '04',
+    badge: 'VIRAL & RETENTION',
     title: 'Content Creation',
     description: 'Engaging, high-retention digital media crafted for the modern eye.',
     image: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&w=800&q=80',
@@ -101,7 +109,7 @@ export default function ServiceCards({ isVisible }: ServiceCardsProps) {
         DESKTOP EDITORIAL MENU 
         Massive typography that reacts to hover (Hidden on Mobile)
       */}
-      <div className="relative z-10 w-full hidden md:flex flex-col items-center justify-center gap-2 mt-20 pointer-events-auto overflow-hidden">
+      <div className="relative z-10 w-full hidden md:flex flex-col items-center justify-center gap-1 mt-6 pointer-events-auto overflow-hidden">
         {services.map((service, index) => {
           const isHovered = activeService === service.id;
           const isFaded = activeService !== null && activeService !== service.id;
@@ -116,51 +124,65 @@ export default function ServiceCards({ isVisible }: ServiceCardsProps) {
           return (
             <Link key={service.id} href={service.href} passHref className="block w-fit mx-auto">
               <motion.div 
-                className="relative cursor-pointer flex flex-col py-6 group pointer-events-auto items-center text-center"
+                className="relative cursor-pointer flex flex-col py-3 group pointer-events-auto items-center text-center"
                 onHoverStart={() => setActiveService(service.id)}
                 onHoverEnd={() => setActiveService(null)}
                 initial={{ y: 50, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.8, delay: 0.5 + index * 0.1, ease: [0.16, 1, 0.3, 1] }}
               >
-                <motion.h2 
-                  className="relative z-10 text-6xl md:text-7xl lg:text-[7vw] leading-normal text-white luxury-text-shadow drop-shadow-2xl flex flex-row items-center justify-center gap-[0.2em] pointer-events-none w-auto"
-                  animate={{ 
-                    opacity: isFaded ? 0.2 : 1,
-                    scale: isHovered ? 1.05 : 1
-                  }}
-                  transition={{ duration: 0.5, ease: 'easeOut' }}
-                >
+                <div className="flex items-center gap-4 relative">
+                  {/* Subtle Number Tag on Hover */}
                   <motion.span 
-                    className="font-sans font-black tracking-tighter text-white"
-                    animate={{ letterSpacing: isHovered ? '0.02em' : '-0.02em' }}
-                    transition={{ duration: 0.5 }}
+                    className="font-mono text-xs text-[#FFD700] tracking-widest absolute -left-12 top-1/2 -translate-y-1/2 font-light hidden lg:block pointer-events-none"
+                    animate={{ opacity: isHovered ? 1 : 0, x: isHovered ? 0 : 10 }}
+                    transition={{ duration: 0.3 }}
                   >
-                    {displayFirst}
+                    {service.num} //
                   </motion.span>
 
-                  {displaySecond && (
+                  <motion.h2 
+                    className="relative z-10 text-5xl md:text-6xl lg:text-[6.5vw] leading-none text-white luxury-text-shadow drop-shadow-2xl flex flex-row items-center justify-center gap-[0.2em] pointer-events-none w-auto py-1"
+                    animate={{ 
+                      opacity: isFaded ? 0.25 : 1,
+                      scale: isHovered ? 1.04 : 1
+                    }}
+                    transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                  >
                     <motion.span 
-                      className="font-cormorant font-light italic tracking-wide text-[#FFD700]"
-                      animate={{ letterSpacing: isHovered ? '0.1em' : '0.02em' }}
-                      transition={{ duration: 0.5 }}
+                      className="font-sans font-black tracking-tighter text-white"
+                      animate={{ letterSpacing: isHovered ? '0.01em' : '-0.02em' }}
+                      transition={{ duration: 0.4 }}
                     >
-                      {displaySecond}
+                      {displayFirst}
                     </motion.span>
-                  )}
-                </motion.h2>
+
+                    {displaySecond && (
+                      <motion.span 
+                        className="font-instrument italic font-normal text-[#FFD700] text-[1.08em]"
+                        animate={{ letterSpacing: isHovered ? '0.05em' : '0.01em' }}
+                        transition={{ duration: 0.4 }}
+                      >
+                        {displaySecond}.
+                      </motion.span>
+                    )}
+                  </motion.h2>
+                </div>
 
                 <motion.div 
-                  className="overflow-hidden pointer-events-none relative z-10 block"
+                  className="overflow-hidden pointer-events-none relative z-10 flex flex-col items-center gap-2"
                   initial={{ height: 0, opacity: 0 }}
                   animate={{ 
                     height: isHovered ? 'auto' : 0,
                     opacity: isHovered ? 1 : 0,
-                    marginTop: isHovered ? 8 : 0
+                    marginTop: isHovered ? 6 : 0
                   }}
-                  transition={{ duration: 0.4, ease: 'easeOut' }}
+                  transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
                 >
-                  <p className="font-sans text-xs tracking-[0.25em] uppercase text-white/80 font-semibold text-center max-w-[80%] mx-auto">
+                  <span className="px-3 py-1 rounded-full bg-white/10 border border-white/20 font-mono text-[9px] uppercase tracking-[0.3em] text-[#FFD700] backdrop-blur-md">
+                    [ {service.badge} ]
+                  </span>
+                  <p className="font-sans text-xs tracking-[0.2em] uppercase text-white/80 font-medium text-center max-w-[85%] mx-auto">
                     {service.description}
                   </p>
                 </motion.div>
@@ -207,8 +229,8 @@ export default function ServiceCards({ isVisible }: ServiceCardsProps) {
                       {displayFirst}
                     </span>
                     {displaySecond && (
-                      <span className="font-cormorant italic text-[#FFD700] text-3xl leading-none tracking-wide">
-                        {displaySecond}
+                      <span className="font-instrument italic font-normal text-[#FFD700] text-3xl leading-none tracking-normal">
+                        {displaySecond}.
                       </span>
                     )}
                   </div>

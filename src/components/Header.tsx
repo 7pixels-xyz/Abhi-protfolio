@@ -3,6 +3,8 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { useState, useRef, useEffect } from 'react';
+import { useTheme } from './ThemeProvider';
+import { usePathname } from 'next/navigation';
 
 const mainLinks = [
   { id: 'home', label: 'Home', href: '/' },
@@ -23,6 +25,11 @@ export default function Header() {
   const [isNicheOpen, setIsNicheOpen] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const headerRef = useRef<HTMLDivElement>(null);
+  const { theme } = useTheme();
+  const pathname = usePathname();
+  
+  const isVideoPage = pathname === '/niche/video-editing';
+  const isNight = isVideoPage ? true : theme === 'night';
 
   // Click outside to close
   useEffect(() => {
@@ -89,7 +96,7 @@ export default function Header() {
       {/* 
         The Liquid Glass Cylinder
       */}
-      <div className="relative flex items-center gap-2 p-2 rounded-full premium-glass bg-white/5 border border-white/20 shadow-[0_30px_60px_rgba(0,0,0,0.3)] backdrop-blur-2xl">
+      <div className={`relative flex items-center gap-2 p-2 rounded-full premium-glass ${isNight ? 'bg-white/5 border-white/20' : 'bg-black/5 border-black/20'} shadow-[0_30px_60px_rgba(0,0,0,0.3)] backdrop-blur-2xl transition-colors duration-1000`}>
         
         {mainLinks.map((link, index) => {
           const isHovered = hoveredIndex === index;
@@ -106,7 +113,7 @@ export default function Header() {
               {isHovered && (
                 <motion.div
                   layoutId="liquid-hover"
-                  className="absolute inset-0 bg-white/10 rounded-full"
+                  className={`absolute inset-0 rounded-full ${isNight ? 'bg-white/10' : 'bg-black/10'}`}
                   transition={{ type: 'spring', stiffness: 300, damping: 25 }}
                 />
               )}
@@ -115,7 +122,7 @@ export default function Header() {
               {isActive && (
                 <motion.div
                   layoutId="liquid-active"
-                  className="absolute inset-0 bg-white rounded-full shadow-[0_0_20px_rgba(255,255,255,0.4)]"
+                  className={`absolute inset-0 rounded-full shadow-[0_0_20px_rgba(0,0,0,0.1)] ${isNight ? 'bg-white' : 'bg-black'}`}
                   transition={{ type: 'spring', stiffness: 300, damping: 25 }}
                 />
               )}
@@ -123,7 +130,9 @@ export default function Header() {
               {/* Text Label */}
               <span 
                 className={`relative z-10 font-sans text-xs tracking-[0.2em] uppercase font-bold transition-colors duration-300 flex items-center gap-2 ${
-                  isActive ? 'text-black' : 'text-white'
+                  isActive 
+                    ? (isNight ? 'text-black' : 'text-white') 
+                    : (isNight ? 'text-white' : 'text-black')
                 }`}
               >
                 {link.label}
@@ -166,7 +175,7 @@ export default function Header() {
             animate={{ opacity: 1, y: 16, scale: 1, filter: 'blur(0px)' }}
             exit={{ opacity: 0, y: -10, scale: 0.95, filter: 'blur(10px)' }}
             transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-            className="absolute top-full w-max p-3 rounded-[2rem] premium-glass bg-white/5 border border-white/20 shadow-[0_30px_60px_rgba(0,0,0,0.5)] backdrop-blur-2xl flex flex-col gap-1 origin-top"
+            className={`absolute top-full w-max p-3 rounded-[2rem] premium-glass ${isNight ? 'bg-white/5 border-white/20' : 'bg-black/5 border-black/20'} shadow-[0_30px_60px_rgba(0,0,0,0.5)] backdrop-blur-2xl flex flex-col gap-1 origin-top transition-colors duration-1000`}
           >
             {nicheLinks.map((niche, i) => (
               <Link href={niche.href} key={niche.id} passHref onClick={() => setIsNicheOpen(false)}>
@@ -177,9 +186,9 @@ export default function Header() {
                   className="group relative px-4 py-3 md:px-8 md:py-4 cursor-pointer rounded-full overflow-hidden text-center block"
                 >
                   {/* Sub-menu hover effect */}
-                  <div className="absolute inset-0 bg-white/0 group-hover:bg-white/10 transition-colors duration-300 rounded-full" />
+                  <div className={`absolute inset-0 transition-colors duration-300 rounded-full ${isNight ? 'bg-white/0 group-hover:bg-white/10' : 'bg-black/0 group-hover:bg-black/10'}`} />
                   
-                  <span className="relative z-10 text-white/60 group-hover:text-white transition-colors duration-300 flex items-center justify-center gap-[0.2em] text-[11px] md:text-sm">
+                  <span className={`relative z-10 transition-colors duration-300 flex items-center justify-center gap-[0.2em] text-[11px] md:text-sm ${isNight ? 'text-white/60 group-hover:text-white' : 'text-black/60 group-hover:text-black'}`}>
                     <span className="font-sans font-black tracking-widest uppercase">{niche.first}</span>
                     <span className="font-cormorant font-light italic tracking-[0.15em] lowercase">{niche.second}</span>
                   </span>
