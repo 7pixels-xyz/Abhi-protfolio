@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { motion, useScroll, useTransform, useMotionTemplate, useMotionValue, AnimatePresence } from 'framer-motion';
 import { useRef, MouseEvent, useState, useEffect } from 'react';
@@ -343,11 +343,11 @@ const commercialVideos = [
   "https://res.cloudinary.com/adwbvkcv/video/upload/v1785413214/3_fgihsd.mp4"
 ];
 const commercialVideoMeta: { title: string; client: string }[] = [
-  { title: "Taste of Tapiocha", client: "Tapiocha Buns Â· Food Brand" },
-  { title: "The Perfect Bite", client: "Tapiocha Buns Â· Product Ad" },
-  { title: "Urban Vibes", client: "Brand Campaign Â· 2024" },
-  { title: "Studio Sessions", client: "Creator Content Â· 2024" },
-  { title: "Golden Hour", client: "Lifestyle Brand Â· 2024" },
+  { title: "Taste of Tapiocha", client: "Tapiocha Buns · Food Brand" },
+  { title: "The Perfect Bite", client: "Tapiocha Buns · Product Ad" },
+  { title: "Urban Vibes", client: "Brand Campaign · 2024" },
+  { title: "Studio Sessions", client: "Creator Content · 2024" },
+  { title: "Golden Hour", client: "Lifestyle Brand · 2024" },
 ];
 const dummyColor: string[] = [];
 
@@ -483,7 +483,7 @@ const CommercialMasonryCard = ({ videoUrl, index, onPlay, globalActiveAudioUrl, 
        
        <div className={`absolute inset-0 flex flex-col justify-end p-6 md:p-8 transition-opacity duration-500 bg-gradient-to-t from-black/90 via-black/20 to-transparent ${shouldPlay ? 'opacity-100' : 'opacity-0'}`}>
           <div className={`flex flex-col gap-1 transition-transform duration-500 ${shouldPlay ? 'translate-y-0' : 'translate-y-4'}`}>
-             <span className="font-sans text-[10px] tracking-[0.2em] text-[#00ff88] uppercase">{commercialVideoMeta[index]?.client ?? 'Commercial Â· 2024'}</span>
+             <span className="font-sans text-[10px] tracking-[0.2em] text-[#00ff88] uppercase">{commercialVideoMeta[index]?.client ?? 'Commercial · 2024'}</span>
              <span className="font-cormorant italic text-2xl md:text-3xl text-white truncate">{commercialVideoMeta[index]?.title ?? 'Brand Edit'}</span>
           </div>
        </div>
@@ -690,7 +690,7 @@ export default function VideoEditorClient() {
                </div>
                <div className="w-[1px] h-10 bg-white/20" />
                <div className="flex flex-col gap-1">
-                 <span className="font-sans font-black text-2xl text-white">4.8Ã—</span>
+                 <span className="font-sans font-black text-2xl text-white">4.8×</span>
                  <span className="font-sans text-[9px] tracking-[0.2em] uppercase text-white/50">Avg. Engagement Rate</span>
                </div>
                <div className="w-[1px] h-10 bg-white/20" />
@@ -744,7 +744,7 @@ export default function VideoEditorClient() {
                </div>
                <div className="w-[1px] h-8 bg-white/20" />
                <div className="flex flex-col items-center gap-0.5">
-                 <span className="font-sans font-black text-xl text-white">4.8Ã—</span>
+                 <span className="font-sans font-black text-xl text-white">4.8×</span>
                  <span className="font-sans text-[8px] tracking-widest uppercase text-white/50">Engagement</span>
                </div>
                <div className="w-[1px] h-8 bg-white/20" />
@@ -824,7 +824,7 @@ export default function VideoEditorClient() {
                    <span className="font-sans text-[10px] tracking-[0.3em] text-[#8fb3d9] uppercase mb-3 block">Who Am I</span>
                    <h2 className="font-sans font-black text-4xl lg:text-5xl tracking-tighter uppercase text-white mb-4">Abhi.<br/><span className="font-instrument italic font-light text-white/60 text-3xl lg:text-4xl">Creative Director</span></h2>
                    <p className="font-sans text-sm text-white/60 leading-relaxed">
-                     I started editing for a gaming channel 5 years ago and never stopped. Today, I craft videos for brands and creators that are designed to stop the scroll, hold attention, and drive results â€” 600K+ views and counting.
+                     I started editing for a gaming channel 5 years ago and never stopped. Today, I craft videos for brands and creators that are designed to stop the scroll, hold attention, and drive results — 600K+ views and counting.
                    </p>
                 </div>
 
@@ -833,10 +833,10 @@ export default function VideoEditorClient() {
                    <span className="font-sans text-[10px] tracking-[0.3em] text-[#8fb3d9] uppercase mb-5 block">Experience</span>
                    <div className="flex flex-col gap-0 border-l-2 border-[#7A0C16]/40 pl-6">
                      {[
-                       { year: "2024 â€” Now", role: "Creative Director & Lead Editor", desc: "Brands, Restaurants & Commercial Campaigns" },
-                       { year: "2022 â€” 2024", role: "Freelance Video Editor", desc: "Content Creators & Influencers (100K+)" },
-                       { year: "2021 â€” 2022", role: "Social Media Editor", desc: "Instagram Reels & YouTube Shorts" },
-                       { year: "2019 â€” 2021", role: "Self-Taught Origins", desc: "Gaming YouTube â€” Where it all began." },
+                       { year: "2024 — Now", role: "Creative Director & Lead Editor", desc: "Brands, Restaurants & Commercial Campaigns" },
+                       { year: "2022 — 2024", role: "Freelance Video Editor", desc: "Content Creators & Influencers (100K+)" },
+                       { year: "2021 — 2022", role: "Social Media Editor", desc: "Instagram Reels & YouTube Shorts" },
+                       { year: "2019 — 2021", role: "Self-Taught Origins", desc: "Gaming YouTube — Where it all began." },
                      ].map((item, i) => (
                        <motion.div 
                          key={i}
@@ -859,12 +859,12 @@ export default function VideoEditorClient() {
                    <span className="font-sans text-[10px] tracking-[0.3em] text-[#8fb3d9] uppercase mb-5 block">Specialty</span>
                    <div className="grid grid-cols-3 gap-3">
                      {[
-                       { icon: "âš¡", label: "Short-Form", sub: "Reels & TikTok" },
-                       { icon: "ðŸŽ¬", label: "Commercial", sub: "Brand Ads" },
-                       { icon: "ðŸŽž", label: "Cinematic", sub: "Long-Form" },
-                       { icon: "ðŸŽ¨", label: "Motion", sub: "Graphics" },
-                       { icon: "ðŸŽ™", label: "Podcasts", sub: "Video Editing" },
-                       { icon: "ðŸ½", label: "Restaurant", sub: "Content" },
+                       { icon: "⚡", label: "Short-Form", sub: "Reels & TikTok" },
+                       { icon: "🎬", label: "Commercial", sub: "Brand Ads" },
+                       { icon: "🎞", label: "Cinematic", sub: "Long-Form" },
+                       { icon: "🎨", label: "Motion", sub: "Graphics" },
+                       { icon: "🎙", label: "Podcasts", sub: "Video Editing" },
+                       { icon: "🍽", label: "Restaurant", sub: "Content" },
                      ].map((s, i) => (
                        <div key={i} className="flex flex-col gap-1 p-3 border border-white/10 rounded-xl hover:border-[#8fb3d9]/40 hover:bg-white/5 transition-all cursor-default">
                          <span className="text-lg">{s.icon}</span>
@@ -970,8 +970,8 @@ export default function VideoEditorClient() {
               {[
                 {
                   name: "Riya Sharma",
-                  role: "Lifestyle Creator Â· 180K followers",
-                  quote: "Hands down the best editor I've ever worked with. Abhi doesn't just cut clips â€” he tells a story. My reel views tripled after we started working together.",
+                  role: "Lifestyle Creator · 180K followers",
+                  quote: "Hands down the best editor I've ever worked with. Abhi doesn't just cut clips — he tells a story. My reel views tripled after we started working together.",
                   rating: 5,
                   initials: "RS",
                   color: "#7A0C16"
@@ -986,16 +986,16 @@ export default function VideoEditorClient() {
                 },
                 {
                   name: "Sneha Patel",
-                  role: "Food & Restaurant Creator Â· 95K",
-                  quote: "Abhi's edits for our restaurant content felt cinematic â€” like a movie. Our Instagram reach went up by 60% in just two months of collaboration.",
+                  role: "Food & Restaurant Creator · 95K",
+                  quote: "Abhi's edits for our restaurant content felt cinematic — like a movie. Our Instagram reach went up by 60% in just two months of collaboration.",
                   rating: 5,
                   initials: "SP",
                   color: "#1a4a1a"
                 },
                 {
                   name: "Arjun Mehta",
-                  role: "Fashion Influencer Â· 220K followers",
-                  quote: "Every single video he delivers is premium quality. The pacing, the cuts, the color â€” everything is dialed in perfectly. He understands the algorithm.",
+                  role: "Fashion Influencer · 220K followers",
+                  quote: "Every single video he delivers is premium quality. The pacing, the cuts, the color — everything is dialed in perfectly. He understands the algorithm.",
                   rating: 5,
                   initials: "AM",
                   color: "#3a1a4a"
@@ -1010,7 +1010,7 @@ export default function VideoEditorClient() {
                 },
                 {
                   name: "Kunal Singh",
-                  role: "YouTube Creator Â· 500K subscribers",
+                  role: "YouTube Creator · 500K subscribers",
                   quote: "The retention on my long-form videos went from 38% to 61% after Abhi started editing. That's the real metric. If you want results, he's your guy.",
                   rating: 5,
                   initials: "KS",
@@ -1131,7 +1131,7 @@ export default function VideoEditorClient() {
                   </div>
                   <div className="mt-5 text-center lg:text-right">
                     <span className="font-sans font-black text-xl tracking-widest uppercase text-white block">Abhi</span>
-                    <span className="font-instrument italic text-lg text-white/50">Creative Director Â· Video Editor</span>
+                    <span className="font-instrument italic text-lg text-white/50">Creative Director · Video Editor</span>
                   </div>
                 </div>
 
@@ -1164,8 +1164,8 @@ export default function VideoEditorClient() {
 
             {/* Footer Bottom */}
             <div className="mt-24 pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-4">
-              <span className="font-sans text-[10px] text-white/20 tracking-widest uppercase">Â© 2025 Abhi Â· Creative Director</span>
-              <span className="font-sans text-[10px] text-white/20 tracking-widest uppercase">Built with passion Â· No AI edits.</span>
+              <span className="font-sans text-[10px] text-white/20 tracking-widest uppercase">© 2025 Abhi · Creative Director</span>
+              <span className="font-sans text-[10px] text-white/20 tracking-widest uppercase">Built with passion · No AI edits.</span>
             </div>
           </div>
        </section>
